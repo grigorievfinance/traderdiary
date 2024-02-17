@@ -32,6 +32,6 @@ public class PositionUtil {
     }
 
     private static PositionTo createTo(Position position, boolean profitable) {
-        return new PositionTo(position.getDateTime(), position.getSymbol(), position.getProfitLoss(), profitable);
+        return new PositionTo(position.getId(), position.getDateTime(), position.getSymbol(), position.getProfitLoss(), profitable);
     }
 }

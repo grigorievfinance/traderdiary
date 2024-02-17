@@ -40,6 +40,8 @@
                 </td>
                 <td>${position.symbol}</td>
                 <td>${position.profitLoss}</td>
+                <td><a href="positions?action=update&id=${position.id}">Update</a></td>
+                <td><a href="positions?action=delete&id=${position.id}">Delete</a></td>
             </tr>
         </c:forEach>
     </table>
