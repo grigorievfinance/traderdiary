@@ -1,5 +1,7 @@
 package com.grigorievfinance.traderdiary.model;
 
+import org.springframework.util.CollectionUtils;
+
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.Set;
@@ -10,17 +12,19 @@ public class User extends AbstractNamedEntity {
     private boolean enabled;
     private Date registered = new Date();
     private Set<Role> roles;
+    private double balance;
 
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
-        this(id, name, email, password, true, EnumSet.of(role, roles));
+        this(id, name, email, password, true, EnumSet.of(role, roles), 1000);
     }
 
-    public User(Integer id, String name, String email, String password, boolean enabled, Set<Role> roles) {
+    public User(Integer id, String name, String email, String password, boolean enabled, Set<Role> roles, double balance) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.enabled = enabled;
-        this.roles = roles;
+        this.balance = balance;
+        setRoles(roles);
     }
 
     public String getEmail() {
@@ -60,7 +64,15 @@ public class User extends AbstractNamedEntity {
     }
 
     public void setRoles(Set<Role> roles) {
-        this.roles = roles;
+        this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
+    }
+
+    public double getBalance() {
+        return balance;
+    }
+
+    public void setBalance(double balance) {
+        this.balance = balance;
     }
 
     @Override
@@ -71,6 +83,7 @@ public class User extends AbstractNamedEntity {
                 ", name='" + name + '\'' +
                 ", enabled=" + enabled +
                 ", roles=" + roles +
+                ", balance=" + balance +
                 '}';
     }
 }

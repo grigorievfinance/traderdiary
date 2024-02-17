@@ -1,7 +1,7 @@
 package com.grigorievfinance.traderdiary.web;
 
 import com.grigorievfinance.traderdiary.model.Position;
-import com.grigorievfinance.traderdiary.repository.InMemoryPositionRepository;
+import com.grigorievfinance.traderdiary.repository.inmemory.InMemoryPositionRepository;
 import com.grigorievfinance.traderdiary.repository.PositionRepository;
 import com.grigorievfinance.traderdiary.util.PositionUtil;
 import org.slf4j.Logger;

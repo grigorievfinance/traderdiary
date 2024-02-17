@@ -1,6 +1,7 @@
-package com.grigorievfinance.traderdiary.repository;
+package com.grigorievfinance.traderdiary.repository.inmemory;
 
 import com.grigorievfinance.traderdiary.model.Position;
+import com.grigorievfinance.traderdiary.repository.PositionRepository;
 
 import java.util.Collection;
 import java.util.Map;
