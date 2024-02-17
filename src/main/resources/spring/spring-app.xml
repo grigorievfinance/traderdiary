@@ -1,7 +1,8 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean class="com.grigorievfinance.traderdiary.repository.inmemory.InMemoryUserRepository" id="inmemoryUserRepository"/>
-
+    <context:component-scan base-package="com.grigorievfinance.traderdiary.**.repository"/>
+    <context:component-scan base-package="com.grigorievfinance.traderdiary.**.service"/>
+    <context:component-scan base-package="com.grigorievfinance.traderdiary.**.web"/>
 </beans>

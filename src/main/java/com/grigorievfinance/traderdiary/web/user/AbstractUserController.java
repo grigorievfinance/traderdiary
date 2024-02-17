@@ -4,6 +4,7 @@ import com.grigorievfinance.traderdiary.model.User;
 import com.grigorievfinance.traderdiary.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 
@@ -13,6 +14,7 @@ import static com.grigorievfinance.traderdiary.util.ValidationUtil.checkNew;
 public abstract class AbstractUserController {
     protected final Logger log = LoggerFactory.getLogger(getClass());
 
+    @Autowired
     private UserService userService;
 
     public List<User> getAll() {
