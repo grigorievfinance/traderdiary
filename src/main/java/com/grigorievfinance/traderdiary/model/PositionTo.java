@@ -15,6 +15,22 @@ public class PositionTo {
         this.profitable = profitable;
     }
 
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public String getSymbol() {
+        return symbol;
+    }
+
+    public double getProfitLoss() {
+        return profitLoss;
+    }
+
+    public boolean isProfitable() {
+        return profitable;
+    }
+
     @Override
     public String toString() {
         return "PositionTo{" +

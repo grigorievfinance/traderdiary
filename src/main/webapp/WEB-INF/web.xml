@@ -15,4 +15,14 @@
         <servlet-name>userServlet</servlet-name>
         <url-pattern>/users</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>positionServlet</servlet-name>
+        <servlet-class>com.grigorievfinance.traderdiary.web.PositionServlet</servlet-class>
+        <load-on-startup>0</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>positionServlet</servlet-name>
+        <url-pattern>/positions</url-pattern>
+    </servlet-mapping>
 </web-app>
