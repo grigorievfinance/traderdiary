@@ -5,6 +5,7 @@ import com.grigorievfinance.traderdiary.model.PositionTo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class PositionUtil {
 
-    public static List<PositionTo> getTos(List<Position> positions, double profitLoss) {
+    public static List<PositionTo> getTos(Collection<Position> positions, double profitLoss) {
         return filterByPredicate(positions, profitLoss, position -> true);
     }
 
@@ -20,7 +21,7 @@ public class PositionUtil {
         return filterByPredicate(positions, profitLoss, position -> DateTimeUtil.isBetweenHalfOpen(position.getTime(), startTime, endTime));
     }
 
-    public static List<PositionTo> filterByPredicate(List<Position> positions, double profitLoss, Predicate<Position> filter) {
+    public static List<PositionTo> filterByPredicate(Collection<Position> positions, double profitLoss, Predicate<Position> filter) {
         Map<LocalDate, Double> profitSumByDate = positions.stream()
                 .collect(
                         Collectors.groupingBy(Position::getDate, Collectors.summingDouble(Position::getProfitLoss))
