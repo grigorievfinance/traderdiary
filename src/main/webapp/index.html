@@ -6,9 +6,13 @@
 <body>
 <h3>Project <a href="https://github.com/grigorievfinance/traderdiary" target="_blank">Online Trader Diary</a></h3>
 <hr>
-<ul style="font-size: large">
-    <li><a href="users">Users</a></li>
-    <li><a href="positions">Positions</a></li>
-</ul>
+<form method="post" action="users">
+    <b style="font-size: large">Positions of&nbsp;</b>
+    <select name="userId">
+        <option value="1">User</option>
+        <option value="2">Admin</option>
+    </select>
+    <button type="submit">Select</button>
+</form>
 </body>
 </html>

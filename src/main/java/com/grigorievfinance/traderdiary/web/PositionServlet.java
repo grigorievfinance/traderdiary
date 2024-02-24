@@ -1,28 +1,39 @@
 package com.grigorievfinance.traderdiary.web;
 
 import com.grigorievfinance.traderdiary.model.Position;
-import com.grigorievfinance.traderdiary.repository.inmemory.InMemoryPositionRepository;
-import com.grigorievfinance.traderdiary.repository.PositionRepository;
-import com.grigorievfinance.traderdiary.util.PositionUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.grigorievfinance.traderdiary.web.position.PositionRestController;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
+import static com.grigorievfinance.traderdiary.util.DateTimeUtil.parseLocalDate;
+import static com.grigorievfinance.traderdiary.util.DateTimeUtil.parseLocalTime;
+
 public class PositionServlet extends HttpServlet {
-    private static final Logger log = LoggerFactory.getLogger(PositionServlet.class);
-    private PositionRepository positionRepository;
+    private ConfigurableApplicationContext springContext;
+    private PositionRestController positionController;
 
     @Override
     public void init() {
-        positionRepository = new InMemoryPositionRepository();
+        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml");
+        positionController = springContext.getBean(PositionRestController.class);
+    }
+
+    @Override
+    public void destroy() {
+        springContext.close();
+        super.destroy();
     }
 
     @Override
@@ -33,8 +44,11 @@ public class PositionServlet extends HttpServlet {
                 LocalDateTime.parse(request.getParameter("dateTime")),
                 request.getParameter("symbol"),
                 Integer.parseInt(request.getParameter("profitLoss")));
-        log.info(position.isNew() ? "Create {}" : "Update {}", position);
-        positionRepository.save(position, SecurityUtil.authUserId());
+        if (StringUtils.hasLength(request.getParameter("id"))) {
+            positionController.update(position, getId(request));
+        } else {
+            positionController.create(position);
+        }
         response.sendRedirect("positions");
     }
 
@@ -44,22 +58,27 @@ public class PositionServlet extends HttpServlet {
         switch (action == null ? "all" : action) {
             case "delete":
                 int id = getId(request);
-                log.info("Delete id={}", id);
-                positionRepository.delete(id, SecurityUtil.authUserId());
+                positionController.delete(id);
                 response.sendRedirect("positions");
                 break;
             case "create":
             case "update":
                 final Position position = "create".equals(action) ?
                         new Position(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
-                        positionRepository.get(getId(request), SecurityUtil.authUserId());
+                        positionController.get(getId(request));
                 request.setAttribute("position", position);
                 request.getRequestDispatcher("/positionForm.jsp").forward(request, response);
                 break;
+            case "filter":
+                LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
+                LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
+                LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
+                LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
+                request.setAttribute("positions", positionController.getBetween(startDate, startTime, endDate, endTime));
+                request.getRequestDispatcher("/positions.jsp").forward(request, response);
+            case "all":
             default:
-                log.info("getAll");
-                request.setAttribute("positions",
-                        PositionUtil.getTos(positionRepository.getAll(SecurityUtil.authUserId()), PositionUtil.MAX_LOSS));
+                request.setAttribute("positions", positionController.getAll());
                 request.getRequestDispatcher("/positions.jsp").forward(request, response);
                 break;
         }
