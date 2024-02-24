@@ -3,6 +3,7 @@ package com.grigorievfinance.traderdiary.repository.inmemory;
 import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.repository.PositionRepository;
 import com.grigorievfinance.traderdiary.util.Util;
+import org.springframework.stereotype.Repository;
 import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
@@ -12,6 +13,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+@Repository
 public class InMemoryPositionRepository implements PositionRepository {
     private final Map<Integer, Map<Integer, Position>> usersPositionsMap = new ConcurrentHashMap<>();
     private final AtomicInteger counter = new AtomicInteger(0);

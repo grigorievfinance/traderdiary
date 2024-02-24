@@ -16,7 +16,7 @@ public class User extends AbstractNamedEntity {
     private double balance;
 
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
-        this(id, name, email, password, true, EnumSet.of(role, roles), PositionUtil.INITIAL_DEPOSIT);
+        this(id, name, email, password, true, EnumSet.of(role, roles), PositionUtil.MAX_LOSS);
     }
 
     public User(Integer id, String name, String email, String password, boolean enabled, Set<Role> roles, double balance) {

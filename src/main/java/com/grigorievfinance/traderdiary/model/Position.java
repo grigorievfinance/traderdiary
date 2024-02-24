@@ -4,8 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
-public class Position {
-    private Integer id;
+public class Position extends AbstractBaseEntity {
     private final LocalDateTime dateTime;
     private final String symbol;
     private final double profitLoss;
@@ -15,18 +14,10 @@ public class Position {
     }
 
     public Position(Integer id, LocalDateTime dateTime, String symbol, double profitLoss) {
-        this.id = id;
+        super(id);
         this.dateTime = dateTime;
         this.symbol = symbol;
         this.profitLoss = profitLoss;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
     }
 
     public LocalDateTime getDateTime() {
@@ -47,10 +38,6 @@ public class Position {
 
     public LocalTime getTime() {
         return dateTime.toLocalTime();
-    }
-
-    public boolean isNew() {
-        return id == null;
     }
 
     @Override

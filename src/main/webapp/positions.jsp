@@ -29,8 +29,8 @@
             <th>Calories</th>
         </tr>
         </thead>
-        <c:forEach items="${requestScope.meals}" var="position">
-            <jsp:useBean id="position" type="com.grigorievfinance.traderdiary.model.PositionTo"/>
+        <c:forEach items="${requestScope.positions}" var="position">
+            <jsp:useBean id="position" type="com.grigorievfinance.traderdiary.to.PositionTo"/>
             <tr class="${position.profitable ? 'excess' : 'normal'}">
                 <td>
                         <%--${position.dateTime.toLocalDate()} ${position.dateTime.toLocalTime()}--%>

@@ -1,4 +1,4 @@
-package com.grigorievfinance.traderdiary.model;
+package com.grigorievfinance.traderdiary.to;
 
 import java.time.LocalDateTime;
 

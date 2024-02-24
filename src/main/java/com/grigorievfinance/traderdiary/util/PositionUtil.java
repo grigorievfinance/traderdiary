@@ -1,7 +1,7 @@
 package com.grigorievfinance.traderdiary.util;
 
 import com.grigorievfinance.traderdiary.model.Position;
-import com.grigorievfinance.traderdiary.model.PositionTo;
+import com.grigorievfinance.traderdiary.to.PositionTo;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -12,13 +12,13 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class PositionUtil {
-    public static final double INITIAL_DEPOSIT = 1000;
+    public static final double MAX_LOSS = 1000;
 
     public static List<PositionTo> getTos(Collection<Position> positions, double maxProfitLoss) {
         return filterByPredicate(positions, maxProfitLoss, position -> true);
     }
 
-    public static List<PositionTo> getFilteredTos(List<Position> positions, double profitLoss, LocalTime startTime, LocalTime endTime) {
+    public static List<PositionTo> getFilteredTos(Collection<Position> positions, double profitLoss, LocalTime startTime, LocalTime endTime) {
         return filterByPredicate(positions, profitLoss, position -> Util.isBetweenHalfOpen(position.getTime(), startTime, endTime));
     }
 
