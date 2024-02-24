@@ -1,5 +1,6 @@
 package com.grigorievfinance.traderdiary.model;
 
+import com.grigorievfinance.traderdiary.util.PositionUtil;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Date;
@@ -15,7 +16,7 @@ public class User extends AbstractNamedEntity {
     private double balance;
 
     public User(Integer id, String name, String email, String password, Role role, Role... roles) {
-        this(id, name, email, password, true, EnumSet.of(role, roles), 1000);
+        this(id, name, email, password, true, EnumSet.of(role, roles), PositionUtil.INITIAL_DEPOSIT);
     }
 
     public User(Integer id, String name, String email, String password, boolean enabled, Set<Role> roles, double balance) {

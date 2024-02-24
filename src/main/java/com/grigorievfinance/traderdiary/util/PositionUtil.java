@@ -12,23 +12,24 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class PositionUtil {
+    public static final double INITIAL_DEPOSIT = 1000;
 
-    public static List<PositionTo> getTos(Collection<Position> positions, double profitLoss) {
-        return filterByPredicate(positions, profitLoss, position -> true);
+    public static List<PositionTo> getTos(Collection<Position> positions, double maxProfitLoss) {
+        return filterByPredicate(positions, maxProfitLoss, position -> true);
     }
 
     public static List<PositionTo> getFilteredTos(List<Position> positions, double profitLoss, LocalTime startTime, LocalTime endTime) {
-        return filterByPredicate(positions, profitLoss, position -> DateTimeUtil.isBetweenHalfOpen(position.getTime(), startTime, endTime));
+        return filterByPredicate(positions, profitLoss, position -> Util.isBetweenHalfOpen(position.getTime(), startTime, endTime));
     }
 
-    public static List<PositionTo> filterByPredicate(Collection<Position> positions, double profitLoss, Predicate<Position> filter) {
+    public static List<PositionTo> filterByPredicate(Collection<Position> positions, double maxProfitLoss, Predicate<Position> filter) {
         Map<LocalDate, Double> profitSumByDate = positions.stream()
                 .collect(
                         Collectors.groupingBy(Position::getDate, Collectors.summingDouble(Position::getProfitLoss))
                 );
         return positions.stream()
                 .filter(filter)
-                .map(position -> createTo(position, profitSumByDate.get(position.getDate()) > profitLoss))
+                .map(position -> createTo(position, profitSumByDate.get(position.getDate()) > maxProfitLoss))
                 .collect(Collectors.toList());
     }
 

@@ -59,7 +59,7 @@ public class PositionServlet extends HttpServlet {
             default:
                 log.info("getAll");
                 request.setAttribute("positions",
-                        PositionUtil.getTos(positionRepository.getAll(SecurityUtil.authUserId()), 1000));
+                        PositionUtil.getTos(positionRepository.getAll(SecurityUtil.authUserId()), PositionUtil.INITIAL_DEPOSIT));
                 request.getRequestDispatcher("/positions.jsp").forward(request, response);
                 break;
         }

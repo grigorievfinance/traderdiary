@@ -2,14 +2,14 @@ package com.grigorievfinance.traderdiary.repository.inmemory;
 
 import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.repository.PositionRepository;
+import com.grigorievfinance.traderdiary.util.Util;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class InMemoryPositionRepository implements PositionRepository {
@@ -40,10 +40,20 @@ public class InMemoryPositionRepository implements PositionRepository {
     }
 
     @Override
-    public Collection<Position> getAll(int userId) {
+    public List<Position> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
+        return filterByPredicate(userId, position -> Util.isBetweenHalfOpen(position.getDateTime(), startDateTime, endDateTime));
+    }
+
+    @Override
+    public List<Position> getAll(int userId) {
+        return filterByPredicate(userId, position -> true);
+    }
+
+    private List<Position> filterByPredicate(int userId, Predicate<Position> filter) {
         Map<Integer, Position> positions = usersPositionsMap.get(userId);
         return CollectionUtils.isEmpty(positions) ? Collections.emptyList() :
                 positions.values().stream()
+                        .filter(filter)
                         .sorted(Comparator.comparing(Position::getDateTime).reversed())
                         .collect(Collectors.toList());
     }

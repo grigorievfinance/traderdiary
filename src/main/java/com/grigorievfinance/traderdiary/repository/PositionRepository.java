@@ -2,7 +2,8 @@ package com.grigorievfinance.traderdiary.repository;
 
 import com.grigorievfinance.traderdiary.model.Position;
 
-import java.util.Collection;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public interface PositionRepository {
     Position save(Position position, int userId);
@@ -11,5 +12,7 @@ public interface PositionRepository {
 
     Position get(int id, int userId);
 
-    Collection<Position> getAll(int userId);
+    List<Position> getAll(int userId);
+
+    List<Position> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId);
 }
