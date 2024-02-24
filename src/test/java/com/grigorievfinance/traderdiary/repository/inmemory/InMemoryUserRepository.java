@@ -8,8 +8,17 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.grigorievfinance.traderdiary.UserTestData.*;
+
 @Repository
 public class InMemoryUserRepository extends InMemoryBaseRepository<User> implements UserRepository {
+    public void init() {
+        map.clear();
+        put(user);
+        put(admin);
+        put(guest);
+        counter.getAndSet(GUEST_ID + 1);
+    }
     @Override
     public List<User> getAll() {
         return getCollection().stream()

@@ -3,9 +3,7 @@ package com.grigorievfinance.traderdiary.model;
 import com.grigorievfinance.traderdiary.util.PositionUtil;
 import org.springframework.util.CollectionUtils;
 
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.Set;
+import java.util.*;
 
 public class User extends AbstractNamedEntity {
     private String email;
@@ -15,11 +13,11 @@ public class User extends AbstractNamedEntity {
     private Set<Role> roles;
     private double balance;
 
-    public User(Integer id, String name, String email, String password, Role role, Role... roles) {
-        this(id, name, email, password, true, EnumSet.of(role, roles), PositionUtil.MAX_LOSS);
+    public User(Integer id, String name, String email, String password, Role... roles) {
+        this(id, name, email, password, true, Arrays.asList(roles), PositionUtil.MAX_LOSS);
     }
 
-    public User(Integer id, String name, String email, String password, boolean enabled, Set<Role> roles, double balance) {
+    public User(Integer id, String name, String email, String password, boolean enabled, Collection<Role> roles, double balance) {
         super(id, name);
         this.email = email;
         this.password = password;
@@ -64,7 +62,7 @@ public class User extends AbstractNamedEntity {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Collection<Role> roles) {
         this.roles = CollectionUtils.isEmpty(roles) ? EnumSet.noneOf(Role.class) : EnumSet.copyOf(roles);
     }
 
