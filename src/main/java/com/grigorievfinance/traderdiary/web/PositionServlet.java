@@ -19,6 +19,8 @@ import java.util.Objects;
 public class PositionServlet extends HttpServlet {
     private static final Logger log = LoggerFactory.getLogger(PositionServlet.class);
     private PositionRepository positionRepository;
+
+    @Override
     public void init() {
         positionRepository = new InMemoryPositionRepository();
     }
@@ -32,7 +34,7 @@ public class PositionServlet extends HttpServlet {
                 request.getParameter("symbol"),
                 Integer.parseInt(request.getParameter("profitLoss")));
         log.info(position.isNew() ? "Create {}" : "Update {}", position);
-        positionRepository.save(position);
+        positionRepository.save(position, SecurityUtil.authUserId());
         response.sendRedirect("positions");
     }
 
@@ -43,21 +45,21 @@ public class PositionServlet extends HttpServlet {
             case "delete":
                 int id = getId(request);
                 log.info("Delete id={}", id);
-                positionRepository.delete(id);
+                positionRepository.delete(id, SecurityUtil.authUserId());
                 response.sendRedirect("positions");
                 break;
             case "create":
             case "update":
                 final Position position = "create".equals(action) ?
                         new Position(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
-                        positionRepository.get(getId(request));
+                        positionRepository.get(getId(request), SecurityUtil.authUserId());
                 request.setAttribute("position", position);
                 request.getRequestDispatcher("/positionForm.jsp").forward(request, response);
                 break;
             default:
                 log.info("getAll");
                 request.setAttribute("positions",
-                        PositionUtil.getTos(positionRepository.getAll(), 1000));
+                        PositionUtil.getTos(positionRepository.getAll(SecurityUtil.authUserId()), 1000));
                 request.getRequestDispatcher("/positions.jsp").forward(request, response);
                 break;
         }

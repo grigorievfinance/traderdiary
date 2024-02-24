@@ -5,11 +5,11 @@ import com.grigorievfinance.traderdiary.model.Position;
 import java.util.Collection;
 
 public interface PositionRepository {
-    Position save(Position position);
+    Position save(Position position, int userId);
 
-    boolean delete(int id);
+    boolean delete(int id, int userId);
 
-    Position get(int id);
+    Position get(int id, int userId);
 
-    Collection<Position> getAll();
+    Collection<Position> getAll(int userId);
 }
