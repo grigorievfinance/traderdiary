@@ -4,40 +4,32 @@ import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.repository.PositionRepository;
 import com.grigorievfinance.traderdiary.util.Util;
 import org.springframework.stereotype.Repository;
-import org.springframework.util.CollectionUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryPositionRepository implements PositionRepository {
-    private final Map<Integer, Map<Integer, Position>> usersPositionsMap = new ConcurrentHashMap<>();
-    private final AtomicInteger counter = new AtomicInteger(0);
+    private final Map<Integer, InMemoryBaseRepository<Position>> usersPositionsMap = new ConcurrentHashMap<>();
 
     @Override
     public Position save(Position position, int userId) {
-        Map<Integer, Position> positions = usersPositionsMap.computeIfAbsent(userId, uId -> new ConcurrentHashMap<>());
-        if (position.isNew()) {
-            position.setId(counter.incrementAndGet());
-            positions.put(position.getId(), position);
-            return position;
-        }
-        return positions.computeIfPresent(position.getId(), (id, olPosition) -> position);
+        InMemoryBaseRepository<Position> positions = usersPositionsMap.computeIfAbsent(userId, uId -> new InMemoryBaseRepository<>());
+        return positions.save(position);
     }
 
     @Override
     public boolean delete(int id, int userId) {
-        Map<Integer, Position> positions = usersPositionsMap.get(userId);
-        return positions != null && positions.remove(id) != null;
+        InMemoryBaseRepository<Position> positions = usersPositionsMap.get(userId);
+        return positions != null && positions.delete(id);
     }
 
     @Override
     public Position get(int id, int userId) {
-        Map<Integer, Position> positions = usersPositionsMap.get(userId);
+        InMemoryBaseRepository<Position> positions = usersPositionsMap.get(userId);
         return positions == null ? null : positions.get(id);
     }
 
@@ -52,9 +44,9 @@ public class InMemoryPositionRepository implements PositionRepository {
     }
 
     private List<Position> filterByPredicate(int userId, Predicate<Position> filter) {
-        Map<Integer, Position> positions = usersPositionsMap.get(userId);
-        return CollectionUtils.isEmpty(positions) ? Collections.emptyList() :
-                positions.values().stream()
+        InMemoryBaseRepository<Position> positions = usersPositionsMap.get(userId);
+        return positions == null ? Collections.emptyList() :
+                positions.getCollection().stream()
                         .filter(filter)
                         .sorted(Comparator.comparing(Position::getDateTime).reversed())
                         .collect(Collectors.toList());
