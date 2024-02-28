@@ -1,9 +1,11 @@
 package com.grigorievfinance.traderdiary.web;
 
+import com.grigorievfinance.traderdiary.model.AbstractBaseEntity;
+
 import static com.grigorievfinance.traderdiary.util.PositionUtil.MAX_LOSS;
 
 public class SecurityUtil {
-    private static int id = 1;
+    private static int id = AbstractBaseEntity.START_SEQ;
     public static int authUserId() {
         return id;
     }
