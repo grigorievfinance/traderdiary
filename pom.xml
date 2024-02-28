@@ -26,6 +26,7 @@
 
         <!--    Tests  -->
         <junit.version>4.13.2</junit.version>
+        <assertj.version>3.25.3</assertj.version>
     </properties>
 
     <build>
@@ -99,6 +100,7 @@
             <version>1.2</version>
         </dependency>
 
+        <!-- Test-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -110,6 +112,11 @@
             <artifactId>spring-test</artifactId>
             <version>${spring.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.assertj</groupId>
+            <artifactId>assertj-core</artifactId>
+            <version>${assertj.version}</version>
         </dependency>
     </dependencies>
 

@@ -13,16 +13,26 @@ public class User extends AbstractNamedEntity {
     private Set<Role> roles;
     private double balance;
 
-    public User(Integer id, String name, String email, String password, Role... roles) {
-        this(id, name, email, password, true, Arrays.asList(roles), PositionUtil.MAX_LOSS);
+    public User() {
     }
 
-    public User(Integer id, String name, String email, String password, boolean enabled, Collection<Role> roles, double balance) {
+
+
+    public User(User u) {
+        this(u.id, u.name, u.email, u.password, u.enabled, u.registered, u.roles, u.balance);
+    }
+
+    public User(Integer id, String name, String email, String password, Role... roles) {
+        this(id, name, email, password, true, new Date(), Arrays.asList(roles), PositionUtil.MAX_LOSS);
+    }
+
+    public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles, double balance) {
         super(id, name);
         this.email = email;
         this.password = password;
         this.enabled = enabled;
         this.balance = balance;
+        this.registered = registered;
         setRoles(roles);
     }
 
