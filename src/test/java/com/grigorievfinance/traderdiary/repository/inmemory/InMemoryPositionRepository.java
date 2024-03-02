@@ -1,5 +1,7 @@
 package com.grigorievfinance.traderdiary.repository.inmemory;
 
+import com.grigorievfinance.traderdiary.PositionTestData;
+import com.grigorievfinance.traderdiary.UserTestData;
 import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.repository.PositionRepository;
 import com.grigorievfinance.traderdiary.util.Util;
@@ -14,6 +16,12 @@ import java.util.stream.Collectors;
 @Repository
 public class InMemoryPositionRepository implements PositionRepository {
     private final Map<Integer, InMemoryBaseRepository<Position>> usersPositionsMap = new ConcurrentHashMap<>();
+
+    {
+        InMemoryBaseRepository<Position> userPositions = new InMemoryBaseRepository<>();
+        PositionTestData.positions.forEach(userPositions::put);
+        usersPositionsMap.put(UserTestData.USER_ID, userPositions);
+    }
 
     @Override
     public Position save(Position position, int userId) {
