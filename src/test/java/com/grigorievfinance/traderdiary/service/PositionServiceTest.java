@@ -4,7 +4,6 @@ import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.util.exception.NotFoundException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.bridge.SLF4JBridgeHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
@@ -28,10 +27,6 @@ import static org.junit.Assert.assertThrows;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class PositionServiceTest {
-
-    static {
-        SLF4JBridgeHandler.install();
-    }
 
     @Autowired
     private PositionService service;
