@@ -9,9 +9,9 @@ import java.util.List;
 
 import static com.grigorievfinance.traderdiary.model.AbstractBaseEntity.START_SEQ;
 import static java.time.LocalDateTime.of;
-import static org.assertj.core.api.Assertions.assertThat;
 
 public class PositionTestData {
+    public static final MatcherFactory.Matcher<Position> POSITION_MATCHER = MatcherFactory.usingIgnoringFieldsComparator();
     public static final int NOT_FOUND = 10;
     public static final int POSITION1_ID = START_SEQ + 3;
     public static final int ADMIN_POSITION_ID = START_SEQ + 10;
@@ -34,17 +34,5 @@ public class PositionTestData {
 
     public static Position getUpdated() {
         return new Position(POSITION1_ID, position1.getDateTime().plus(2, ChronoUnit.MINUTES), "BTCUSDT", 200);
-    }
-
-    public static void assertMatch(Position actual, Position expected) {
-        assertThat(actual).usingRecursiveComparison().isEqualTo(expected);
-    }
-
-    public static void assertMatch(Iterable<Position> actual, Position... expected) {
-        assertMatch(actual, Arrays.asList(expected));
-    }
-
-    public static void assertMatch(Iterable<Position> actual, Iterable<Position> expected) {
-        assertThat(actual).usingRecursiveFieldByFieldElementComparator().isEqualTo(expected);
     }
 }

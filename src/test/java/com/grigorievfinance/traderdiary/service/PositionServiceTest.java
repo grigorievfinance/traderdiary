@@ -53,8 +53,8 @@ public class PositionServiceTest {
         int newId = created.getId();
         Position newPosition = getNew();
         newPosition.setId(newId);
-        assertMatch(created, newPosition);
-        assertMatch(service.get(newId, USER_ID), newPosition);
+        POSITION_MATCHER.assertMatch(created, newPosition);
+        POSITION_MATCHER.assertMatch(service.get(newId, USER_ID), newPosition);
     }
 
     @Test
@@ -66,7 +66,7 @@ public class PositionServiceTest {
     @Test
     public void get() {
         Position actual = service.get(ADMIN_POSITION_ID, ADMIN_ID);
-        assertMatch(actual, adminPosition1);
+        POSITION_MATCHER.assertMatch(actual, adminPosition1);
     }
 
     @Test
@@ -83,23 +83,23 @@ public class PositionServiceTest {
     public void update() {
         Position updated = getUpdated();
         service.update(updated, USER_ID);
-        assertMatch(service.get(POSITION1_ID, USER_ID), getUpdated());
+        POSITION_MATCHER.assertMatch(service.get(POSITION1_ID, USER_ID), getUpdated());
     }
 
     @Test
     public void updateNotOwn() {
         assertThrows(NotFoundException.class, () -> service.update(position1, ADMIN_ID));
-        assertMatch(service.get(POSITION1_ID, USER_ID), position1);
+        POSITION_MATCHER.assertMatch(service.get(POSITION1_ID, USER_ID), position1);
     }
 
     @Test
     public void getAll() {
-        assertMatch(service.getAll(USER_ID), positions);
+        POSITION_MATCHER.assertMatch(service.getAll(USER_ID), positions);
     }
 
     @Test
     public void getBetweenInclusive() {
-        assertMatch(service.getBetweenInclusive(
+        POSITION_MATCHER.assertMatch(service.getBetweenInclusive(
                         LocalDate.of(2020, Month.JANUARY, 30),
                         LocalDate.of(2020, Month.JANUARY, 30), USER_ID),
                 position3, position2, position1);
@@ -107,6 +107,6 @@ public class PositionServiceTest {
 
     @Test
     public void getBetweenWithNullDates() {
-        assertMatch(service.getBetweenInclusive(null, null, USER_ID), positions);
+        POSITION_MATCHER.assertMatch(service.getBetweenInclusive(null, null, USER_ID), positions);
     }
 }
