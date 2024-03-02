@@ -23,3 +23,14 @@ CREATE TABLE user_role
     CONSTRAINT user_roles_idx UNIQUE (user_id, role),
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
+
+CREATE TABLE position
+(
+    id          INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    user_id     INTEGER   NOT NULL,
+    date_time   TIMESTAMP NOT NULL,
+    symbol      TEXT      NOT NULL,
+    profit      DOUBLE PRECISION       NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+);
+CREATE UNIQUE INDEX position_unique_user_datetime_idx ON position (user_id, date_time)
