@@ -1,5 +1,7 @@
 package com.grigorievfinance.traderdiary.model;
 
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -8,6 +10,9 @@ public class Position extends AbstractBaseEntity {
     private LocalDateTime dateTime;
     private String symbol;
     private double profitLoss;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private User user;
 
     public Position() {
     }
@@ -53,6 +58,14 @@ public class Position extends AbstractBaseEntity {
 
     public void setProfitLoss(double profitLoss) {
         this.profitLoss = profitLoss;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override
