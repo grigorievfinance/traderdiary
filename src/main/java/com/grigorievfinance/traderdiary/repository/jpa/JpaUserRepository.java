@@ -2,20 +2,23 @@ package com.grigorievfinance.traderdiary.repository.jpa;
 
 import com.grigorievfinance.traderdiary.model.User;
 import com.grigorievfinance.traderdiary.repository.UserRepository;
+import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import java.util.List;
 
 @Repository
+@Transactional(readOnly = true)
 public class JpaUserRepository implements UserRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
 
     @Override
+    @Transactional
     public User save(User user) {
         if (user.isNew()) {
             entityManager.persist(user);
@@ -26,9 +29,11 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
+    @Transactional
     public boolean delete(int id) {
-        Query query = entityManager.createQuery("DELETE FROM User u WHERE u.id=:id");
-        return query.setParameter("id", id).executeUpdate() != 0;
+        return entityManager.createNamedQuery(User.DELETE)
+                .setParameter("id", id)
+                .executeUpdate() != 0;
     }
 
     @Override
@@ -38,11 +43,15 @@ public class JpaUserRepository implements UserRepository {
 
     @Override
     public User getByEmail(String email) {
-        return null;
+        List<User> users = entityManager.createNamedQuery(User.BY_EMAIL, User.class)
+                .setParameter(1, email)
+                .getResultList();
+        return DataAccessUtils.singleResult(users);
     }
 
     @Override
     public List<User> getAll() {
-        return null;
+        return entityManager.createNamedQuery(User.ALL_SORTED, User.class)
+                .getResultList();
     }
 }
