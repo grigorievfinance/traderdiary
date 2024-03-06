@@ -4,6 +4,9 @@ import com.grigorievfinance.traderdiary.model.AbstractBaseEntity;
 import com.grigorievfinance.traderdiary.util.exception.NotFoundException;
 
 public class ValidationUtil {
+    public ValidationUtil() {
+    }
+
     public static <T> T checkNotFoundWithId(T object, int id) {
         checkNotFoundWithId(object != null, id);
         return object;

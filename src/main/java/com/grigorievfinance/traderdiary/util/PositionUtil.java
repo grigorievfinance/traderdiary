@@ -14,6 +14,9 @@ import java.util.stream.Collectors;
 public class PositionUtil {
     public static final double MAX_LOSS = 1000;
 
+    public PositionUtil() {
+    }
+
     public static List<PositionTo> getTos(Collection<Position> positions, double maxProfitLoss) {
         return filterByPredicate(positions, maxProfitLoss, position -> true);
     }

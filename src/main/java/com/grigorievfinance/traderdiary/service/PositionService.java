@@ -4,6 +4,7 @@ import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.repository.PositionRepository;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -37,10 +38,12 @@ public class PositionService {
     }
 
     public void update(Position position, int userId) {
+        Assert.notNull(position, "position must not be null");
         checkNotFoundWithId(positionRepository.save(position, userId), position.getId());
     }
 
     public Position create(Position position, int userId) {
+        Assert.notNull(position, "position must not be null");
         return positionRepository.save(position, userId);
     }
 }

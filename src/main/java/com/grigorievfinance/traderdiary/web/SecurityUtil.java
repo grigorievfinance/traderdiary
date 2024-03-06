@@ -6,6 +6,10 @@ import static com.grigorievfinance.traderdiary.util.PositionUtil.MAX_LOSS;
 
 public class SecurityUtil {
     private static int id = AbstractBaseEntity.START_SEQ;
+
+    public SecurityUtil() {
+    }
+
     public static int authUserId() {
         return id;
     }

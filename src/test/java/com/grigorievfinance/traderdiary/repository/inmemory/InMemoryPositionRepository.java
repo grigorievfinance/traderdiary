@@ -25,6 +25,7 @@ public class InMemoryPositionRepository implements PositionRepository {
 
     @Override
     public Position save(Position position, int userId) {
+        Objects.requireNonNull(position, "position must not be null");
         InMemoryBaseRepository<Position> positions = usersPositionsMap.computeIfAbsent(userId, uId -> new InMemoryBaseRepository<>());
         return positions.save(position);
     }
