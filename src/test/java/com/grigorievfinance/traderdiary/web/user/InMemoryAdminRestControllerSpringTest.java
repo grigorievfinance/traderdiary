@@ -4,7 +4,6 @@ import com.grigorievfinance.traderdiary.repository.inmemory.InMemoryUserReposito
 import com.grigorievfinance.traderdiary.util.exception.NotFoundException;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,9 +13,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import static com.grigorievfinance.traderdiary.UserTestData.NOT_FOUND;
 import static com.grigorievfinance.traderdiary.UserTestData.USER_ID;
 
-@ContextConfiguration("classpath:spring/spring-app.xml")
+@ContextConfiguration({"classpath:spring/spring-app.xml", "classpath:spring/inmemory.xml"})
 @RunWith(SpringRunner.class)
-@Ignore
 public class InMemoryAdminRestControllerSpringTest {
     @Autowired
     private AdminRestController controller;
