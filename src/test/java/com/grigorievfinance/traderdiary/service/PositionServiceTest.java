@@ -2,8 +2,14 @@ package com.grigorievfinance.traderdiary.service;
 
 import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.util.exception.NotFoundException;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.Stopwatch;
+import org.junit.runner.Description;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
@@ -13,12 +19,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.time.LocalDate;
 import java.time.Month;
+import java.util.concurrent.TimeUnit;
 
 import static com.grigorievfinance.traderdiary.PositionTestData.*;
 import static com.grigorievfinance.traderdiary.UserTestData.ADMIN_ID;
 import static com.grigorievfinance.traderdiary.UserTestData.USER_ID;
 import static com.grigorievfinance.traderdiary.PositionTestData.getNew;
 import static org.junit.Assert.assertThrows;
+import static org.slf4j.LoggerFactory.getLogger;
 
 @ContextConfiguration({
         "classpath:spring/spring-app.xml",
@@ -28,8 +36,32 @@ import static org.junit.Assert.assertThrows;
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 public class PositionServiceTest {
 
+    private static final Logger log = getLogger("result");
+
+    private static final StringBuilder results = new StringBuilder();
+
+    @Rule
+    public final Stopwatch stopwatch = new Stopwatch() {
+        @Override
+        protected void finished(long nanos, Description description) {
+            String result = String.format("\n%-25s %7d", description.getMethodName(), TimeUnit.NANOSECONDS.toMillis(nanos));
+            results.append(result);
+            log.info(result + " ms\n");
+        }
+    };
+
+
     @Autowired
     private PositionService service;
+
+    @AfterClass
+    public static void printResult() {
+        log.info("\n---------------------------------" +
+                "\nTest                 Duration, ms" +
+                "\n---------------------------------" +
+                results +
+                "\n---------------------------------");
+    }
 
     @Test
     public void delete() {
@@ -83,7 +115,8 @@ public class PositionServiceTest {
 
     @Test
     public void updateNotOwn() {
-        assertThrows(NotFoundException.class, () -> service.update(position1, ADMIN_ID));
+        NotFoundException exception = assertThrows(NotFoundException.class, () -> service.update(position1, ADMIN_ID));
+        Assert.assertEquals("Not found entity with id=" + POSITION1_ID, exception.getMessage());
         POSITION_MATCHER.assertMatch(service.get(POSITION1_ID, USER_ID), position1);
     }
 
