@@ -4,6 +4,8 @@ import org.springframework.util.Assert;
 
 import javax.persistence.*;
 
+import static com.grigorievfinance.traderdiary.util.Util.getEffectiveClass;
+
 @MappedSuperclass
 @Access(AccessType.FIELD)
 public abstract class AbstractBaseEntity {
@@ -45,18 +47,13 @@ public abstract class AbstractBaseEntity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-        AbstractBaseEntity that = (AbstractBaseEntity) o;
-        return id != null && id.equals(that.id);
+        if (this == o) return true;
+        if (o == null || getEffectiveClass(this) != getEffectiveClass(o)) return false;
+        return getId() != null && getId().equals(((AbstractBaseEntity) o).getId());
     }
 
     @Override
-    public int hashCode() {
-        return id == null ? 0 : id;
+    public final int hashCode() {
+        return getEffectiveClass(this).hashCode();
     }
 }
