@@ -9,7 +9,7 @@ import static com.grigorievfinance.traderdiary.model.AbstractBaseEntity.START_SE
 import static java.time.LocalDateTime.of;
 
 public class PositionTestData {
-    public static final MatcherFactory.Matcher<Position> POSITION_MATCHER = MatcherFactory.usingIgnoringFieldsComparator();
+    public static final MatcherFactory.Matcher<Position> POSITION_MATCHER = MatcherFactory.usingIgnoringFieldsComparator("user");
     public static final int NOT_FOUND = 10;
     public static final int POSITION1_ID = START_SEQ + 3;
     public static final int ADMIN_POSITION_ID = START_SEQ + 10;

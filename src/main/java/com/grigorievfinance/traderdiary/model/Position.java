@@ -1,17 +1,45 @@
 package com.grigorievfinance.traderdiary.model;
 
-import javax.persistence.FetchType;
-import javax.persistence.ManyToOne;
+import org.hibernate.validator.constraints.Range;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+@NamedQueries({
+        @NamedQuery(name = Position.ALL_SORTED, query = "SELECT p FROM Position p WHERE p.user.id=:userId ORDER BY p.dateTime DESC"),
+        @NamedQuery(name = Position.DELETE, query = "DELETE FROM Position p WHERE p.id=:id AND p.user.id=:userId"),
+        @NamedQuery(name = Position.GET_BETWEEN, query = "SELECT p FROM Position p WHERE p.user.id=:userId AND p.dateTime >= :startDateTime and p.dateTime < :endDateTime ORDER BY p.dateTime DESC"),
+})
+
+@Entity
+@Table(name = "position", uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "date_time"}, name = "position_unique_user_datetime_idx")})
 public class Position extends AbstractBaseEntity {
+
+    public static final String ALL_SORTED = "Position.getAll";
+    public static final String DELETE = "Position.delete";
+    public static final String GET_BETWEEN = "Position.getBetween";
+
+    @Column(name = "date_time", nullable = false)
+    @NotNull
     private LocalDateTime dateTime;
+
+    @Column(name = "symbol", nullable = false)
+    @NotBlank
+    @Size(min = 5, max = 20)
     private String symbol;
+
+    @Column(name = "profit", nullable = false)
+    @Range(min = -10, max = 10)
     private double profitLoss;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    @NotNull
     private User user;
 
     public Position() {
