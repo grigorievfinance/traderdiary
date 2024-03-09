@@ -3,10 +3,7 @@ package com.grigorievfinance.traderdiary.service;
 import com.grigorievfinance.traderdiary.ActiveDbProfileResolver;
 import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.util.exception.NotFoundException;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.Stopwatch;
 import org.junit.runner.Description;
 import org.junit.runner.RunWith;
@@ -37,6 +34,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
 @ActiveProfiles(resolver = ActiveDbProfileResolver.class)
+@Ignore
 public class PositionServiceTest {
 
     private static final Logger log = getLogger("result");

@@ -1,5 +1,6 @@
 package com.grigorievfinance.traderdiary.model;
 
+import org.springframework.data.domain.Persistable;
 import org.springframework.util.Assert;
 
 import javax.persistence.*;
@@ -8,7 +9,7 @@ import static com.grigorievfinance.traderdiary.util.Util.getEffectiveClass;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public abstract class AbstractBaseEntity {
+public abstract class AbstractBaseEntity implements Persistable<Integer> {
     public static final int START_SEQ = 100000;
 
     @Id
