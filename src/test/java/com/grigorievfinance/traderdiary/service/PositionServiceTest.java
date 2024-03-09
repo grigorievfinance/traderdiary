@@ -1,6 +1,6 @@
 package com.grigorievfinance.traderdiary.service;
 
-import com.grigorievfinance.traderdiary.Profiles;
+import com.grigorievfinance.traderdiary.ActiveDbProfileResolver;
 import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.util.exception.NotFoundException;
 import org.junit.AfterClass;
@@ -36,7 +36,7 @@ import static org.slf4j.LoggerFactory.getLogger;
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles(Profiles.ACTIVE_DB)
+@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 public class PositionServiceTest {
 
     private static final Logger log = getLogger("result");

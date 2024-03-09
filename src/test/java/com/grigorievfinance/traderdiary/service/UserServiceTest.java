@@ -1,6 +1,6 @@
 package com.grigorievfinance.traderdiary.service;
 
-import com.grigorievfinance.traderdiary.Profiles;
+import com.grigorievfinance.traderdiary.ActiveDbProfileResolver;
 import com.grigorievfinance.traderdiary.UserTestData;
 import com.grigorievfinance.traderdiary.model.Role;
 import com.grigorievfinance.traderdiary.model.User;
@@ -26,7 +26,7 @@ import static org.junit.Assert.assertThrows;
 })
 @RunWith(SpringRunner.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
-@ActiveProfiles(Profiles.ACTIVE_DB)
+@ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 public class UserServiceTest {
 
     @Autowired
