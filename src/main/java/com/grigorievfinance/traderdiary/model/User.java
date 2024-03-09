@@ -61,7 +61,7 @@ public class User extends AbstractNamedEntity {
     }
 
     public User(Integer id, String name, String email, String password, Role... roles) {
-        this(id, name, email, password, true, new Date(), Arrays.asList(roles), PositionUtil.MAX_LOSS);
+        this(id, name, email, password, true, new Date(), List.of(roles), PositionUtil.MAX_LOSS);
     }
 
     public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles, double balance) {

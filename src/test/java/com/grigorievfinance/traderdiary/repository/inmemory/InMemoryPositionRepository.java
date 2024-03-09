@@ -11,14 +11,13 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 @Repository
 public class InMemoryPositionRepository implements PositionRepository {
     private final Map<Integer, InMemoryBaseRepository<Position>> usersPositionsMap = new ConcurrentHashMap<>();
 
     {
-        InMemoryBaseRepository<Position> userPositions = new InMemoryBaseRepository<>();
+        var userPositions = new InMemoryBaseRepository<Position>();
         PositionTestData.positions.forEach(userPositions::put);
         usersPositionsMap.put(UserTestData.USER_ID, userPositions);
     }
@@ -26,19 +25,19 @@ public class InMemoryPositionRepository implements PositionRepository {
     @Override
     public Position save(Position position, int userId) {
         Objects.requireNonNull(position, "position must not be null");
-        InMemoryBaseRepository<Position> positions = usersPositionsMap.computeIfAbsent(userId, uId -> new InMemoryBaseRepository<>());
+        var positions = usersPositionsMap.computeIfAbsent(userId, uId -> new InMemoryBaseRepository<>());
         return positions.save(position);
     }
 
     @Override
     public boolean delete(int id, int userId) {
-        InMemoryBaseRepository<Position> positions = usersPositionsMap.get(userId);
+        var positions = usersPositionsMap.get(userId);
         return positions != null && positions.delete(id);
     }
 
     @Override
     public Position get(int id, int userId) {
-        InMemoryBaseRepository<Position> positions = usersPositionsMap.get(userId);
+        var positions = usersPositionsMap.get(userId);
         return positions == null ? null : positions.get(id);
     }
 
@@ -53,11 +52,11 @@ public class InMemoryPositionRepository implements PositionRepository {
     }
 
     private List<Position> filterByPredicate(int userId, Predicate<Position> filter) {
-        InMemoryBaseRepository<Position> positions = usersPositionsMap.get(userId);
+        var positions = usersPositionsMap.get(userId);
         return positions == null ? Collections.emptyList() :
                 positions.getCollection().stream()
                         .filter(filter)
                         .sorted(Comparator.comparing(Position::getDateTime).reversed())
-                        .collect(Collectors.toList());
+                        .toList();
     }
 }

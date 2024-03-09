@@ -33,7 +33,7 @@ public class PositionUtil {
         return positions.stream()
                 .filter(filter)
                 .map(position -> createTo(position, profitSumByDate.get(position.getDate()) > maxProfitLoss))
-                .collect(Collectors.toList());
+                .toList();
     }
 
     private static PositionTo createTo(Position position, boolean profitable) {

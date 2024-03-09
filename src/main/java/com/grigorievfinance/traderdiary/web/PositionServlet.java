@@ -56,31 +56,30 @@ public class PositionServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String action = request.getParameter("action");
         switch (action == null ? "all" : action) {
-            case "delete":
+            case "delete" -> {
                 int id = getId(request);
                 positionController.delete(id);
                 response.sendRedirect("positions");
-                break;
-            case "create":
-            case "update":
+            }
+            case "create", "update" -> {
                 final Position position = "create".equals(action) ?
                         new Position(LocalDateTime.now().truncatedTo(ChronoUnit.MINUTES), "", 1000) :
                         positionController.get(getId(request));
                 request.setAttribute("position", position);
                 request.getRequestDispatcher("/positionForm.jsp").forward(request, response);
-                break;
-            case "filter":
+            }
+            case "filter" -> {
                 LocalDate startDate = parseLocalDate(request.getParameter("startDate"));
                 LocalDate endDate = parseLocalDate(request.getParameter("endDate"));
                 LocalTime startTime = parseLocalTime(request.getParameter("startTime"));
                 LocalTime endTime = parseLocalTime(request.getParameter("endTime"));
                 request.setAttribute("positions", positionController.getBetween(startDate, startTime, endDate, endTime));
                 request.getRequestDispatcher("/positions.jsp").forward(request, response);
-            case "all":
-            default:
+            }
+            default -> {
                 request.setAttribute("positions", positionController.getAll());
                 request.getRequestDispatcher("/positions.jsp").forward(request, response);
-                break;
+            }
         }
     }
 

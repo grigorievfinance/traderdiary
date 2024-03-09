@@ -16,7 +16,7 @@
         <property name="staticMethod" value="org.slf4j.bridge.SLF4JBridgeHandler.install" />
     </bean>
 
-    <context:component-scan base-package="com.grigorievfinance.traderdiary.**.repository.jdbc"/>
+    <context:component-scan base-package="com.grigorievfinance.traderdiary.**.repository.jpa"/>
 
     <jdbc:initialize-database enabled="${database.init}">
         <jdbc:script location="${jdbc.initLocation}"/>

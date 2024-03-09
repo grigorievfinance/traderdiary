@@ -3,8 +3,6 @@ package com.grigorievfinance.traderdiary;
 import com.grigorievfinance.traderdiary.model.Position;
 
 import java.time.Month;
-import java.time.temporal.ChronoUnit;
-import java.util.Arrays;
 import java.util.List;
 
 import static com.grigorievfinance.traderdiary.model.AbstractBaseEntity.START_SEQ;
@@ -26,13 +24,13 @@ public class PositionTestData {
     public static final Position adminPosition1 = new Position(ADMIN_POSITION_ID, of(2020, Month.JANUARY, 31, 14, 0), "BTCUSDT", 510);
     public static final Position adminPosition2 = new Position(ADMIN_POSITION_ID + 1, of(2020, Month.JANUARY, 31, 21, 0), "ETHUSDT", 1500);
 
-    public static final List<Position> positions = Arrays.asList(position7, position6, position5, position4, position3, position2, position1);
+    public static final List<Position> positions = List.of(position7, position6, position5, position4, position3, position2, position1);
 
     public static Position getNew() {
         return new Position(null, of(2020, Month.FEBRUARY, 1, 18, 0), "ETHUSDT", 300);
     }
 
     public static Position getUpdated() {
-        return new Position(POSITION1_ID, position1.getDateTime().plus(2, ChronoUnit.MINUTES), "BTCUSDT", 200);
+        return new Position(POSITION1_ID, position1.getDateTime().plusMinutes(2), "BTCUSDT", 200);
     }
 }
