@@ -1,8 +1,9 @@
 package com.grigorievfinance.traderdiary.repository.jdbc;
 
+import com.grigorievfinance.traderdiary.Profiles;
 import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.repository.PositionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -12,22 +13,49 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Repository
-public class JdbcPositionRepository implements PositionRepository {
+public abstract class JdbcPositionRepository<T> implements PositionRepository {
 
     private static final RowMapper<Position> ROW_MAPPER = BeanPropertyRowMapper.newInstance(Position.class);
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private final SimpleJdbcInsert inserPosition;
+    private final SimpleJdbcInsert insertPosition;
 
-    @Autowired
-    public JdbcPositionRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
-        this.inserPosition = new SimpleJdbcInsert(jdbcTemplate).withTableName("position").usingGeneratedKeyColumns("id");
+    JdbcPositionRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.insertPosition = new SimpleJdbcInsert(jdbcTemplate).withTableName("position").usingGeneratedKeyColumns("id");
         this.jdbcTemplate = jdbcTemplate;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
+
+    protected abstract T toDbDateTime(LocalDateTime ldt);
+
+    @Repository
+    @Profile(Profiles.POSTGRES_DB)
+    public static class Java8JdbcPositionRepository extends JdbcPositionRepository<LocalDateTime> {
+        public Java8JdbcPositionRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+            super(jdbcTemplate, namedParameterJdbcTemplate);
+        }
+
+        @Override
+        protected LocalDateTime toDbDateTime(LocalDateTime ldt) {
+            return ldt;
+        }
+    }
+
+    @Repository
+    @Profile(Profiles.HSQL_DB)
+    public static class TimestampJdbcPositionRepository extends JdbcPositionRepository<Timestamp> {
+        public TimestampJdbcPositionRepository(JdbcTemplate jdbcTemplate, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+            super(jdbcTemplate, namedParameterJdbcTemplate);
+        }
+
+        @Override
+        protected Timestamp toDbDateTime(LocalDateTime ldt) {
+            return Timestamp.valueOf(ldt);
+        }
     }
 
     @Override
@@ -36,10 +64,10 @@ public class JdbcPositionRepository implements PositionRepository {
                 .addValue("id", position.getId())
                 .addValue("symbol", position.getSymbol())
                 .addValue("profit", position.getProfitLoss())
-                .addValue("date_time", position.getDateTime())
+                .addValue("date_time", toDbDateTime(position.getDateTime()))
                 .addValue("user_id", userId);
         if (position.isNew()) {
-            Number newId = inserPosition.executeAndReturnKey(map);
+            Number newId = insertPosition.executeAndReturnKey(map);
             position.setId(newId.intValue());
         } else {
             if (namedParameterJdbcTemplate.update("UPDATE position SET symbol=:symbol, profit=:profit, date_time=:date_time WHERE id=:id AND user_id=:user_id",
@@ -69,6 +97,6 @@ public class JdbcPositionRepository implements PositionRepository {
     @Override
     public List<Position> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
         return jdbcTemplate.query("SELECT * FROM position WHERE user_id=? AND date_time >= ? AND date_time < ? ORDER BY date_time DESC",
-                ROW_MAPPER, userId, startDateTime, endDateTime);
+                ROW_MAPPER, userId, toDbDateTime(startDateTime), toDbDateTime(endDateTime));
     }
 }

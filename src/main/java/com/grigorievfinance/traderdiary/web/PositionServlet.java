@@ -1,5 +1,6 @@
 package com.grigorievfinance.traderdiary.web;
 
+import com.grigorievfinance.traderdiary.Profiles;
 import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.web.position.PositionRestController;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -26,7 +27,10 @@ public class PositionServlet extends HttpServlet {
 
     @Override
     public void init() {
-        springContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/spring-db.xml");
+        springContext = new ClassPathXmlApplicationContext(new String[]{"spring/spring-app.xml", "spring/spring-db.xml"}, false);
+        //       springContext.setConfigLocations("spring/spring-app.xml", "spring/spring-db.xml");
+        springContext.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
+        springContext.refresh();
         positionController = springContext.getBean(PositionRestController.class);
     }
 
