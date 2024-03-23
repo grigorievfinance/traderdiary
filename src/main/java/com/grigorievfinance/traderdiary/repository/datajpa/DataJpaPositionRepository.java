@@ -2,6 +2,7 @@ package com.grigorievfinance.traderdiary.repository.datajpa;
 
 import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.repository.PositionRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,5 +50,10 @@ public class DataJpaPositionRepository implements PositionRepository {
     @Override
     public List<Position> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId) {
         return crudPositionRepository.getBetweenHalfOpen(startDateTime, endDateTime, userId);
+    }
+
+    @Override
+    public Position getWithUser(int id, int userId) {
+        return crudPositionRepository.getWithUser(id, userId);
     }
 }

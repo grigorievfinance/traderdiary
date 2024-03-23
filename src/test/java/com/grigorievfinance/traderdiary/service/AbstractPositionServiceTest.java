@@ -17,7 +17,7 @@ import static org.junit.Assert.assertThrows;
 
 public abstract class AbstractPositionServiceTest extends AbstractServiceTest {
     @Autowired
-    private PositionService service;
+    protected PositionService service;
 
     @Test
     public void delete() {

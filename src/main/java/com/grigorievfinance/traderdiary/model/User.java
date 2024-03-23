@@ -53,6 +53,10 @@ public class User extends AbstractNamedEntity {
     @Range(min = 10, max = 10000)
     private double balance = 1000;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    @OrderBy("dateTime DESC")
+    private List<Position> positions;
+
     public User() {
     }
 
@@ -120,6 +124,10 @@ public class User extends AbstractNamedEntity {
 
     public void setBalance(double balance) {
         this.balance = balance;
+    }
+
+    public List<Position> getPositions() {
+        return positions;
     }
 
     @Override

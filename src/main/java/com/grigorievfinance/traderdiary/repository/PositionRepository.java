@@ -15,4 +15,8 @@ public interface PositionRepository {
     List<Position> getAll(int userId);
 
     List<Position> getBetweenHalfOpen(LocalDateTime startDateTime, LocalDateTime endDateTime, int userId);
+
+    default Position getWithUser(int id, int userId) {
+        throw new UnsupportedOperationException();
+    }
 }

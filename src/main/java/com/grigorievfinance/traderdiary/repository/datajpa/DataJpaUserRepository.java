@@ -3,6 +3,7 @@ package com.grigorievfinance.traderdiary.repository.datajpa;
 import com.grigorievfinance.traderdiary.model.User;
 import com.grigorievfinance.traderdiary.repository.UserRepository;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -41,4 +42,10 @@ public class DataJpaUserRepository implements UserRepository {
     public List<User> getAll() {
         return crudRepository.findAll(SORT_NAME_EMAIL);
     }
+
+    @Override
+    public User getWithPositions(int id) {
+        return crudRepository.getWithPositions(id);
+    }
+
 }

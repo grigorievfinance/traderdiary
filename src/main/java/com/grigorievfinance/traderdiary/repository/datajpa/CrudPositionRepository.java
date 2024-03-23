@@ -22,4 +22,7 @@ public interface CrudPositionRepository extends JpaRepository<Position, Integer>
 
     @Query("SELECT p FROM Position p WHERE p.user.id=:userId AND p.dateTime>=:startDate AND p.dateTime<:endDate ORDER BY p.dateTime DESC")
     List<Position> getBetweenHalfOpen(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("userId") int userId);
+
+    @Query("SELECT p FROM Position p JOIN FETCH p.user WHERE p.id = ?1 AND p.user.id = ?2")
+    Position getWithUser(int id, int userId);
 }
