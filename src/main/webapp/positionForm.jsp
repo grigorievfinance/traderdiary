@@ -8,7 +8,7 @@
 </head>
 <body>
 <section>
-    <h3><a href="index.html">Home</a></h3>
+    <h3><a href="index.jsp">Home</a></h3>
     <hr>
     <h2>${param.action == 'create' ? 'Create position' : 'Edit position'}</h2>
     <jsp:useBean id="position" type="com.grigorievfinance.traderdiary.model.Position" scope="request"/>
