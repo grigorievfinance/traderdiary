@@ -3,6 +3,7 @@ package com.grigorievfinance.traderdiary.service;
 import com.grigorievfinance.traderdiary.UserTestData;
 import com.grigorievfinance.traderdiary.model.Role;
 import com.grigorievfinance.traderdiary.model.User;
+import com.grigorievfinance.traderdiary.repository.JpaUtil;
 import com.grigorievfinance.traderdiary.util.exception.NotFoundException;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,9 +26,13 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Autowired
     private CacheManager cacheManager;
 
+    @Autowired
+    protected JpaUtil jpaUtil;
+
     @Before
     public void setup() {
         cacheManager.getCache("users").clear();
+        jpaUtil.clear2ndLevelHibernateCache();
     }
 
     @Test

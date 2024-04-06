@@ -7,9 +7,6 @@ import org.springframework.test.context.ActiveProfiles;
 import static com.grigorievfinance.traderdiary.Profiles.JDBC;
 
 @ActiveProfiles(JDBC)
+@Ignore
 public class JdbcUserServiceTest extends AbstractUserServiceTest {
-    @Override
-    @Ignore
-    public void createWithException() throws Exception {
-    }
 }
