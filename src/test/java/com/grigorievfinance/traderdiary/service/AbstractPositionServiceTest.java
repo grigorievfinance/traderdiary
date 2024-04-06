@@ -7,12 +7,14 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 
+import javax.validation.ConstraintViolationException;
 import java.time.LocalDate;
 import java.time.Month;
 
 import static com.grigorievfinance.traderdiary.PositionTestData.*;
 import static com.grigorievfinance.traderdiary.UserTestData.ADMIN_ID;
 import static com.grigorievfinance.traderdiary.UserTestData.USER_ID;
+import static java.time.LocalDateTime.of;
 import static org.junit.Assert.assertThrows;
 
 public abstract class AbstractPositionServiceTest extends AbstractServiceTest {
@@ -97,5 +99,13 @@ public abstract class AbstractPositionServiceTest extends AbstractServiceTest {
     @Test
     public void getBetweenWithNullDates() {
         POSITION_MATCHER.assertMatch(service.getBetweenInclusive(null, null, USER_ID), positions);
+    }
+
+    @Test
+    public void createWithException() throws Exception {
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new Position(null, of(2015, Month.JUNE, 1, 18, 0), "  ", 300), USER_ID));
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new Position(null, null, "Description", 300), USER_ID));
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new Position(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 9), USER_ID));
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new Position(null, of(2015, Month.JUNE, 1, 18, 0), "Description", 5001), USER_ID));
     }
 }

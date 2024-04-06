@@ -2,6 +2,8 @@ package com.grigorievfinance.traderdiary.util;
 
 import com.grigorievfinance.traderdiary.model.AbstractBaseEntity;
 import com.grigorievfinance.traderdiary.util.exception.NotFoundException;
+import org.springframework.core.NestedExceptionUtils;
+import org.springframework.lang.NonNull;
 
 public class ValidationUtil {
     public ValidationUtil() {
@@ -36,8 +38,14 @@ public class ValidationUtil {
     public static void assureIdConsistent(AbstractBaseEntity entity, int id) {
         if (entity.isNew()) {
             entity.setId(id);
-        } else if (entity.getId() != id) {
+        } else if (entity.id() != id) {
             throw new IllegalArgumentException(entity + " must be with id=" + id);
         }
+    }
+
+    @NonNull
+    public static Throwable getRootCause(@NonNull Throwable t) {
+        Throwable rootCause = NestedExceptionUtils.getRootCause(t);
+        return rootCause != null ? rootCause : t;
     }
 }
