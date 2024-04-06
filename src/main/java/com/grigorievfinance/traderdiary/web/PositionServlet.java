@@ -1,11 +1,10 @@
 package com.grigorievfinance.traderdiary.web;
 
-import com.grigorievfinance.traderdiary.Profiles;
 import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.web.position.PositionRestController;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.StringUtils;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -22,23 +21,14 @@ import static com.grigorievfinance.traderdiary.util.DateTimeUtil.parseLocalDate;
 import static com.grigorievfinance.traderdiary.util.DateTimeUtil.parseLocalTime;
 
 public class PositionServlet extends HttpServlet {
-    private ConfigurableApplicationContext springContext;
     private PositionRestController positionController;
 
     @Override
     public void init() {
-        springContext = new ClassPathXmlApplicationContext(new String[]{"spring/spring-app.xml", "spring/spring-db.xml"}, false);
-        //       springContext.setConfigLocations("spring/spring-app.xml", "spring/spring-db.xml");
-        springContext.getEnvironment().setActiveProfiles(Profiles.getActiveDbProfile(), Profiles.REPOSITORY_IMPLEMENTATION);
-        springContext.refresh();
+        WebApplicationContext springContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
         positionController = springContext.getBean(PositionRestController.class);
     }
 
-    @Override
-    public void destroy() {
-        springContext.close();
-        super.destroy();
-    }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {

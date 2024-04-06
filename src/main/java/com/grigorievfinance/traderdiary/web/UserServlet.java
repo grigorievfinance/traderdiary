@@ -1,6 +1,9 @@
 package com.grigorievfinance.traderdiary.web;
 
+import com.grigorievfinance.traderdiary.web.user.AdminRestController;
 import org.slf4j.Logger;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -12,6 +15,15 @@ import static org.slf4j.LoggerFactory.getLogger;
 
 public class UserServlet extends HttpServlet {
     private static final Logger log = getLogger(UserServlet.class);
+
+    private AdminRestController adminRestController;
+
+    @Override
+    public void init() throws ServletException {
+        WebApplicationContext springContext = WebApplicationContextUtils.getRequiredWebApplicationContext(getServletContext());
+        adminRestController = springContext.getBean(AdminRestController.class);
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int userId = Integer.parseInt(request.getParameter("userId"));
@@ -21,7 +33,8 @@ public class UserServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.debug("forward to users");
+        log.debug("getAll");
+        request.setAttribute("users", adminRestController.getAll());
         request.getRequestDispatcher("/users.jsp").forward(request, response);
     }
 }
