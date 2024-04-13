@@ -1,6 +1,8 @@
 package com.grigorievfinance.traderdiary.web;
 
+import com.grigorievfinance.traderdiary.service.PositionService;
 import com.grigorievfinance.traderdiary.service.UserService;
+import com.grigorievfinance.traderdiary.util.PositionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,10 @@ public class RootController {
     private static final Logger log = LoggerFactory.getLogger(RootController.class);
 
     @Autowired
-    private UserService service;
+    private UserService userService;
+
+    @Autowired
+    private PositionService positionService;
 
     @GetMapping("/")
     public String root() {
@@ -27,7 +32,7 @@ public class RootController {
     @GetMapping("/users")
     public String getUsers(Model model) {
         log.info("users");
-        model.addAttribute("users", service.getAll());
+        model.addAttribute("users", userService.getAll());
         return "users";
     }
 
@@ -37,5 +42,12 @@ public class RootController {
         log.info("setUser {}", userId);
         SecurityUtil.setAuthUserId(userId);
         return "redirect:positions";
+    }
+
+    @GetMapping("/positions")
+    public String getPositions(Model model) {
+        log.info("positions");
+        model.addAttribute("positions", PositionUtil.getTos(positionService.getAll(SecurityUtil.authUserId()), SecurityUtil.authUserMaxLoss()));
+        return "positions";
     }
 }
