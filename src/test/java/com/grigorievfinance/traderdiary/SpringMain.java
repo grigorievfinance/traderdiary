@@ -10,7 +10,7 @@ import java.util.Arrays;
 
 public class SpringMain {
     public static void main(String[] args) {
-        try (ConfigurableApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/spring-app.xml", "spring/inmemory.xml")){
+        try (ConfigurableApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/inmemory.xml")){
             System.out.println("Bean definition names: " + Arrays.toString(applicationContext.getBeanDefinitionNames()));
             AdminRestController adminRestController = applicationContext.getBean(AdminRestController.class);
             adminRestController.create(new User(null, "username", "email@email.com", "password", Role.ADMIN));
