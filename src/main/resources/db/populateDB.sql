@@ -9,7 +9,8 @@ VALUES ('User', 'user@mail.com', 'password'),
 
 INSERT INTO user_role (role, user_id)
 VALUES ('USER', 100000),
-       ('ADMIN', 100001);
+       ('ADMIN', 100001),
+       ('USER', 100001);
 
 INSERT INTO position (date_time, symbol, profit, user_id)
 VALUES ('2020-01-30 10:00:00', 'BNBUSDT', 500, 100000),
