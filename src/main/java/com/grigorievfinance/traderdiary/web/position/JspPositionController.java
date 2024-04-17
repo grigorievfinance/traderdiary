@@ -24,7 +24,7 @@ public class JspPositionController extends AbstractPositionController {
     @GetMapping("/delete")
     public String delete(HttpServletRequest request) {
         super.delete(getId(request));
-        return "redirect:positions";
+        return "redirect:/positions";
     }
 
     @GetMapping("/update")
@@ -50,7 +50,7 @@ public class JspPositionController extends AbstractPositionController {
         } else {
             super.update(position, getId(request));
         }
-        return "redirect:positions";
+        return "redirect:/positions";
     }
 
     @GetMapping("/filter")
