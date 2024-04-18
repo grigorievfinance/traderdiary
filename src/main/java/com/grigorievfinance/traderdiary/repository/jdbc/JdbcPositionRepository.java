@@ -2,6 +2,7 @@ package com.grigorievfinance.traderdiary.repository.jdbc;
 
 import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.repository.PositionRepository;
+import com.grigorievfinance.traderdiary.util.ValidationUtil;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -33,6 +34,7 @@ public class JdbcPositionRepository implements PositionRepository {
     @Override
     @Transactional
     public Position save(Position position, int userId) {
+        ValidationUtil.validate(position);
         MapSqlParameterSource map = new MapSqlParameterSource()
                 .addValue("id", position.getId())
                 .addValue("symbol", position.getSymbol())

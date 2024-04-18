@@ -3,6 +3,7 @@ package com.grigorievfinance.traderdiary.repository.jdbc;
 import com.grigorievfinance.traderdiary.model.Role;
 import com.grigorievfinance.traderdiary.model.User;
 import com.grigorievfinance.traderdiary.repository.UserRepository;
+import com.grigorievfinance.traderdiary.util.ValidationUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.support.DataAccessUtils;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -34,6 +35,7 @@ public class JdbcUserRepository implements UserRepository {
     @Override
     @Transactional
     public User save(User user) {
+        ValidationUtil.validate(user);
         BeanPropertySqlParameterSource parameterSource = new BeanPropertySqlParameterSource(user);
         if (user.isNew()) {
             Number newKey = insertUser.executeAndReturnKey(parameterSource);

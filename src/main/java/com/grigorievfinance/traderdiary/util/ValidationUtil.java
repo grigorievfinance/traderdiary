@@ -5,8 +5,26 @@ import com.grigorievfinance.traderdiary.util.exception.NotFoundException;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
 
+import javax.validation.*;
+import java.util.Set;
+
 public class ValidationUtil {
+
+    private static final Validator validator;
+
+    static {
+        ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+        validator = factory.getValidator();
+    }
+
     public ValidationUtil() {
+    }
+
+    public static <T> void validate(T bean) {
+        Set<ConstraintViolation<T>> violations = validator.validate(bean);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
     }
 
     public static <T> T checkNotFoundWithId(T object, int id) {
