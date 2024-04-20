@@ -1,5 +1,6 @@
 package com.grigorievfinance.traderdiary.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.grigorievfinance.traderdiary.util.PositionUtil;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
@@ -56,7 +57,6 @@ public class User extends AbstractNamedEntity {
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "uk_user_role")})
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
-//    @Fetch(FetchMode.SUBSELECT)
     @BatchSize(size = 200)
     @JoinColumn
     @OnDelete(action = OnDeleteAction.CASCADE)
@@ -69,6 +69,7 @@ public class User extends AbstractNamedEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user") //, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("dateTime DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
     private List<Position> positions;
 
     public User() {
