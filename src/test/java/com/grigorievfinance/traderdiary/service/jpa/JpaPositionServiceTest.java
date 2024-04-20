@@ -6,5 +6,5 @@ import org.springframework.test.context.ActiveProfiles;
 import static com.grigorievfinance.traderdiary.Profiles.JPA;
 
 @ActiveProfiles(JPA)
-public class JpaPositionServiceTest extends AbstractPositionServiceTest {
+class JpaPositionServiceTest extends AbstractPositionServiceTest {
 }

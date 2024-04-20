@@ -2,39 +2,36 @@ package com.grigorievfinance.traderdiary.web.user;
 
 import com.grigorievfinance.traderdiary.repository.inmemory.InMemoryUserRepository;
 import com.grigorievfinance.traderdiary.util.exception.NotFoundException;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 
 import static com.grigorievfinance.traderdiary.UserTestData.NOT_FOUND;
 import static com.grigorievfinance.traderdiary.UserTestData.USER_ID;
 
-@ContextConfiguration({"classpath:spring/inmemory.xml"})
-@RunWith(SpringRunner.class)
-public class InMemoryAdminRestControllerSpringTest {
+@SpringJUnitConfig(locations = {"classpath:spring/inmemory.xml"})
+class InMemoryAdminRestControllerSpringTest {
     @Autowired
     private AdminRestController controller;
 
     @Autowired
     private InMemoryUserRepository repository;
 
-    @Before
-    public void setup() {
+    @BeforeEach
+    void setup() {
         repository.init();
     }
 
     @Test
-    public void delete() {
+    void delete() {
         controller.delete(USER_ID);
-        Assert.assertNull(repository.get(USER_ID));
+        Assertions.assertNull(repository.get(USER_ID));
     }
 
     @Test
-    public void deleteNotFound() {
-        Assert.assertThrows(NotFoundException.class, () -> controller.delete(NOT_FOUND));
+    void deleteNotFound() {
+        Assertions.assertThrows(NotFoundException.class, () -> controller.delete(NOT_FOUND));
     }
 }

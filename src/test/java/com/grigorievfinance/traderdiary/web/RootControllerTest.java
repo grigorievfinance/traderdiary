@@ -1,19 +1,18 @@
 package com.grigorievfinance.traderdiary.web;
 
 import com.grigorievfinance.traderdiary.UserTestData;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static com.grigorievfinance.traderdiary.model.AbstractBaseEntity.START_SEQ;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 
 public class RootControllerTest  extends AbstractControllerTest {
 
     @Test
-    public void getUsers() throws Exception {
+    void getUsers() throws Exception {
         perform(get("/users"))
                 .andDo(print())
                 .andExpect(status().isOk())
