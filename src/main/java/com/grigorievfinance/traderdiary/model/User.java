@@ -1,6 +1,5 @@
 package com.grigorievfinance.traderdiary.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.grigorievfinance.traderdiary.util.PositionUtil;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
@@ -69,7 +68,6 @@ public class User extends AbstractNamedEntity {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user") //, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("dateTime DESC")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnore
     private List<Position> positions;
 
     public User() {
