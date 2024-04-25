@@ -36,7 +36,7 @@ public class PositionUtil {
                 .toList();
     }
 
-    private static PositionTo createTo(Position position, boolean profitable) {
+    public static PositionTo createTo(Position position, boolean profitable) {
         return new PositionTo(position.getId(), position.getDateTime(), position.getSymbol(), position.getProfitLoss(), profitable);
     }
 }

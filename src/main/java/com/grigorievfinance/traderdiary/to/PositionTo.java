@@ -1,5 +1,6 @@
 package com.grigorievfinance.traderdiary.to;
 
+import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -10,6 +11,7 @@ public class PositionTo {
     private final double profitLoss;
     private final boolean profitable;
 
+    @ConstructorProperties({"id", "dateTime", "description", "profitLoss", "profitable"})
     public PositionTo(Integer id, LocalDateTime dateTime, String symbol, double profitLoss, boolean profitable) {
         this.id = id;
         this.dateTime = dateTime;

@@ -1,6 +1,7 @@
 package com.grigorievfinance.traderdiary;
 
 import com.grigorievfinance.traderdiary.model.Position;
+import com.grigorievfinance.traderdiary.to.PositionTo;
 
 import java.time.Month;
 import java.util.List;
@@ -10,6 +11,8 @@ import static java.time.LocalDateTime.of;
 
 public class PositionTestData {
     public static final MatcherFactory.Matcher<Position> POSITION_MATCHER = MatcherFactory.usingIgnoringFieldsComparator(Position.class,"user");
+    public static MatcherFactory.Matcher<PositionTo> TO_MATCHER = MatcherFactory.usingEqualsComparator(PositionTo.class);
+
     public static final int NOT_FOUND = 10;
     public static final int POSITION1_ID = START_SEQ + 3;
     public static final int ADMIN_POSITION_ID = START_SEQ + 10;
