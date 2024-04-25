@@ -145,6 +145,10 @@ public class User extends AbstractNamedEntity {
         return positions;
     }
 
+    public void setPositions(List<Position> positions) {
+        this.positions = positions;
+    }
+
     @Override
     public String toString() {
         return "User{" +
