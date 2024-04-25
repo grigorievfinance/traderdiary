@@ -48,4 +48,9 @@ public abstract class AbstractUserController {
         log.info("getByEmail {}", email);
         return userService.getByEmail(email);
     }
+
+    public User getWithPositions(int id) {
+        log.info("getWithPositions {}", id);
+        return userService.getWithPositions(id);
+    }
 }

@@ -34,4 +34,9 @@ public class ProfileRestController extends AbstractUserController {
     public String testUTF() {
         return "Русский текст";
     }
+
+    @GetMapping("/with-positions")
+    public User getWithPositions() {
+        return super.getWithPositions(authUserId());
+    }
 }

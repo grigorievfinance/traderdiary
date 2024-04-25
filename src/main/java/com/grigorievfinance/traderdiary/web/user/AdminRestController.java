@@ -55,4 +55,9 @@ public class AdminRestController extends AbstractUserController {
     public User getByMail(@RequestParam String email) {
         return super.getByMail(email);
     }
+
+    @GetMapping("/{id}/with-positions")
+    public User getWithPositions(@PathVariable int id) {
+        return super.getWithPositions(id);
+    }
 }
