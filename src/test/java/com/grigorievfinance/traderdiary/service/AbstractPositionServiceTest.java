@@ -42,10 +42,10 @@ public abstract class AbstractPositionServiceTest extends AbstractServiceTest {
     void create() {
         Position created = service.create(getNew(), USER_ID);
         int newId = created.id();
-        Position newMeal = getNew();
-        newMeal.setId(newId);
-        POSITION_MATCHER.assertMatch(created, newMeal);
-        POSITION_MATCHER.assertMatch(service.get(newId, USER_ID), newMeal);
+        Position newposition = getNew();
+        newposition.setId(newId);
+        POSITION_MATCHER.assertMatch(created, newposition);
+        POSITION_MATCHER.assertMatch(service.get(newId, USER_ID), newposition);
     }
 
     @Test

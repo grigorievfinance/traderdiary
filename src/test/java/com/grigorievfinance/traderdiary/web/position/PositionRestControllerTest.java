@@ -56,17 +56,17 @@ public class PositionRestControllerTest extends AbstractControllerTest {
 
     @Test
     void createWithLocation() throws Exception {
-        Position newMeal = getNew();
+        Position newposition = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(newMeal)))
+                .content(JsonUtil.writeValue(newposition)))
                 .andExpect(status().isCreated());
 
         Position created = POSITION_MATCHER.readFromJson(action);
         int newId = created.id();
-        newMeal.setId(newId);
-        POSITION_MATCHER.assertMatch(created, newMeal);
-        POSITION_MATCHER.assertMatch(positionService.get(newId, USER_ID), newMeal);
+        newposition.setId(newId);
+        POSITION_MATCHER.assertMatch(created, newposition);
+        POSITION_MATCHER.assertMatch(positionService.get(newId, USER_ID), newposition);
     }
 
     @Test

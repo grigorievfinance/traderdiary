@@ -33,12 +33,12 @@ class RootControllerTest  extends AbstractControllerTest {
     }
 
     @Test
-    void getMeals() throws Exception {
-        perform(get("/meals"))
+    void getpositions() throws Exception {
+        perform(get("/positions"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(view().name("meals"))
-                .andExpect(forwardedUrl("/WEB-INF/jsp/meals.jsp"))
-                .andExpect(model().attribute("meals", getTos(positions, SecurityUtil.authUserMaxLoss())));
+                .andExpect(view().name("positions"))
+                .andExpect(forwardedUrl("/WEB-INF/jsp/positions.jsp"))
+                .andExpect(model().attribute("positions", getTos(positions, SecurityUtil.authUserMaxLoss())));
     }
 }

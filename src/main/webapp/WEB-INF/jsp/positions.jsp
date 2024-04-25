@@ -10,7 +10,7 @@
 <section>
     <h3><spring:message code="position.title"/></h3>
 
-    <form method="get" action="meals/filter">
+    <form method="get" action="positions/filter">
         <dl>
             <dt><spring:message code="position.startDate"/>:</dt>
             <dd><input type="date" name="startDate" value="${param.startDate}"></dd>
@@ -30,7 +30,7 @@
         <button type="submit"><spring:message code="position.filter"/></button>
     </form>
     <hr>
-    <a href="meals/create"><spring:message code="position.add"/></a>
+    <a href="positions/create"><spring:message code="position.add"/></a>
     <hr>
     <table border="1" cellpadding="8" cellspacing="0">
         <thead>
@@ -44,7 +44,7 @@
         </thead>
         <c:forEach items="${requestScope.positions}" var="position">
             <jsp:useBean id="position" type="com.grigorievfinance.traderdiary.to.PositionTo"/>
-            <tr data-meal-excess="${position.excess}">
+            <tr data-position-excess="${position.excess}">
                 <td>
                         <%--${position.dateTime.toLocalDate()} ${position.dateTime.toLocalTime()}--%>
                         <%--<%=TimeUtil.toString(position.getDateTime())%>--%>
