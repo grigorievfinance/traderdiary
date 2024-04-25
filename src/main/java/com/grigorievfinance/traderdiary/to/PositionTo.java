@@ -1,6 +1,7 @@
 package com.grigorievfinance.traderdiary.to;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class PositionTo {
     private final Integer id;
@@ -35,6 +36,19 @@ public class PositionTo {
 
     public boolean isProfitable() {
         return profitable;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PositionTo that = (PositionTo) o;
+        return Double.compare(profitLoss, that.profitLoss) == 0 && profitable == that.profitable && Objects.equals(id, that.id) && Objects.equals(dateTime, that.dateTime) && Objects.equals(symbol, that.symbol);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, dateTime, symbol, profitLoss, profitable);
     }
 
     @Override
