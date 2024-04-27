@@ -1,42 +1,46 @@
-const ajaxUrl = "admin/users/";
-let datatableApi;
+const userAjaxUrl = "admin/users/";
+
+const ctx = {
+    ajaxUrl: userAjaxUrl
+};
 
 // $(document).ready(function () {
 $(function () {
-    datatableApi = $("#datatable").DataTable({
-        "paging": false,
-        "info": true,
-        "columns": [
-            {
-                "data": "name"
-            },
-            {
-                "data": "email"
-            },
-            {
-                "data": "roles"
-            },
-            {
-                "data": "enabled"
-            },
-            {
-                "data": "registered"
-            },
-            {
-                "defaultContent": "Edit",
-                "orderable": false
-            },
-            {
-                "defaultContent": "Delete",
-                "orderable": false
-            }
-        ],
-        "order": [
-            [
-                0,
-                "asc"
+    makeEditable(
+        $("#datatable").DataTable({
+            "paging": false,
+            "info": true,
+            "columns": [
+                {
+                    "data": "name"
+                },
+                {
+                    "data": "email"
+                },
+                {
+                    "data": "roles"
+                },
+                {
+                    "data": "enabled"
+                },
+                {
+                    "data": "registered"
+                },
+                {
+                    "defaultContent": "Edit",
+                    "orderable": false
+                },
+                {
+                    "defaultContent": "Delete",
+                    "orderable": false
+                }
+            ],
+            "order": [
+                [
+                    0,
+                    "asc"
+                ]
             ]
-        ]
-    });
-    makeEditable();
+        })
+    );
 });
