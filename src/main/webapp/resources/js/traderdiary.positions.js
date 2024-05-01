@@ -1,15 +1,20 @@
-const mealAjaxUrl = "profile/positions/";
+const positionAjaxUrl = "profile/positions/";
 
 const ctx = {
-    ajaxUrl: mealAjaxUrl,
+    ajaxUrl: positionAjaxUrl,
     updateTable: function () {
         $.ajax({
             type: "GET",
-            url: mealAjaxUrl + "filter",
+            url: positionAjaxUrl + "filter",
             data: $("#filter").serialize()
         }).done(updateTableByData);
     }
 };
+
+function clearFilter() {
+    $("#filter")[0].reset();
+    $.get(positionAjaxUrl, updateTableByData);
+}
 
 $(function () {
     makeEditable(
