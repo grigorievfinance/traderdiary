@@ -49,10 +49,6 @@ public class Position extends AbstractBaseEntity {
     public Position() {
     }
 
-    public Position(LocalDateTime dateTime, String symbol, double profitLoss) {
-        this(null, dateTime, symbol, profitLoss);
-    }
-
     public Position(Integer id, LocalDateTime dateTime, String symbol, double profitLoss) {
         super(id);
         this.dateTime = dateTime;
