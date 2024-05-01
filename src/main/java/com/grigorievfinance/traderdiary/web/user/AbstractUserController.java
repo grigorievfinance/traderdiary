@@ -53,4 +53,9 @@ public abstract class AbstractUserController {
         log.info("getWithPositions {}", id);
         return userService.getWithPositions(id);
     }
+
+    public void enable(int id, boolean enabled) {
+        log.info(enabled ? "enable {}" : "disable {}", id);
+        userService.enable(id, enabled);
+    }
 }

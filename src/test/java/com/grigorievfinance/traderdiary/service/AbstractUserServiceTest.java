@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.grigorievfinance.traderdiary.UserTestData.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
@@ -84,5 +84,13 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@mail.com", "  ", Role.USER)));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@mail.in", "password", true, new Date(), Set.of(), 9)));
         validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@main.in", "password", true, new Date(), Set.of(), 10001)));
+    }
+
+    @Test
+    void enable() {
+        service.enable(USER_ID, false);
+        assertFalse(service.get(USER_ID).isEnabled());
+        service.enable(USER_ID, true);
+        assertTrue(service.get(USER_ID).isEnabled());
     }
 }
