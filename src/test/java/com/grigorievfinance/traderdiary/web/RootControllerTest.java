@@ -20,7 +20,7 @@ class RootControllerTest  extends AbstractControllerTest {
     }
 
     @Test
-    void getpositions() throws Exception {
+    void getPositions() throws Exception {
         perform(get("/positions"))
                 .andDo(print())
                 .andExpect(status().isOk())
