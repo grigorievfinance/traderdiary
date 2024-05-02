@@ -1,7 +1,6 @@
 package com.grigorievfinance.traderdiary.web;
 
 import com.grigorievfinance.traderdiary.service.PositionService;
-import com.grigorievfinance.traderdiary.service.UserService;
 import com.grigorievfinance.traderdiary.util.PositionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class RootController {
-    private static final Logger log = LoggerFactory.getLogger(RootController.class);
 
-    @Autowired
-    private UserService userService;
+    private static final Logger log = LoggerFactory.getLogger(RootController.class);
 
     @Autowired
     private PositionService positionService;
@@ -30,9 +27,8 @@ public class RootController {
     }
 
     @GetMapping("/users")
-    public String getUsers(Model model) {
+    public String getUsers() {
         log.info("users");
-        model.addAttribute("users", userService.getAll());
         return "users";
     }
 
