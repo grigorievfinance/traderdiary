@@ -30,7 +30,9 @@ public abstract class AbstractUserController {
     }
 
     public void create(UserTo userTo) {
-        create(UserUtil.createNewFromTo(userTo));
+        log.info("create {}", userTo);
+        checkNew(userTo);
+        userService.create(UserUtil.createNewFromTo(userTo));
     }
 
     public User create(User user) {
@@ -48,6 +50,12 @@ public abstract class AbstractUserController {
         log.info("update {} with id={}", user, id);
         assureIdConsistent(user, id);
         userService.update(user);
+    }
+
+    public void update(UserTo userTo, int id) {
+        log.info("update {} with id={}", userTo, id);
+        assureIdConsistent(userTo, id);
+        userService.update(userTo);
     }
 
     public User getByMail(String email) {

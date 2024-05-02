@@ -11,10 +11,17 @@ import java.util.List;
 @RestController
 @RequestMapping(value = "/admin/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminUIController extends AbstractUserController {
+
     @Override
     @GetMapping
     public List<User> getAll() {
         return super.getAll();
+    }
+
+    @Override
+    @GetMapping("/{id}")
+    public User get(@PathVariable int id) {
+        return super.get(id);
     }
 
     @Override
@@ -26,8 +33,12 @@ public class AdminUIController extends AbstractUserController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void create(UserTo userTo) {
-        super.create(userTo);
+    public void createOrUpdate(UserTo userTo) {
+        if (userTo.isNew()) {
+            super.create(userTo);
+        } else {
+            super.update(userTo, userTo.id());
+        }
     }
 
     @Override

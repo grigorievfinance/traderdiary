@@ -2,6 +2,8 @@ package com.grigorievfinance.traderdiary.web.user;
 
 import com.grigorievfinance.traderdiary.model.User;
 import com.grigorievfinance.traderdiary.service.UserService;
+import com.grigorievfinance.traderdiary.to.UserTo;
+import com.grigorievfinance.traderdiary.util.UserUtil;
 import com.grigorievfinance.traderdiary.web.AbstractControllerTest;
 import com.grigorievfinance.traderdiary.web.json.JsonUtil;
 import org.junit.jupiter.api.Test;
@@ -37,13 +39,13 @@ class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void update() throws Exception {
-        User updated = getUpdated();
+        UserTo updatedTo = new UserTo(null, "newName", "user@yandex.ru", "newPassword");
         perform(MockMvcRequestBuilders.put(REST_URL).contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(JsonUtil.writeValue(updatedTo)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        USER_MATCHER.assertMatch(userService.get(USER_ID), updated);
+        USER_MATCHER.assertMatch(userService.get(USER_ID), UserUtil.updateFromTo(new User(user), updatedTo));
     }
 
     @Test

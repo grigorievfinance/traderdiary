@@ -1,7 +1,6 @@
 package com.grigorievfinance.traderdiary.model;
 
-import org.springframework.data.domain.Persistable;
-import org.springframework.util.Assert;
+import com.grigorievfinance.traderdiary.HasId;
 
 import javax.persistence.*;
 
@@ -9,7 +8,7 @@ import static com.grigorievfinance.traderdiary.util.Util.getEffectiveClass;
 
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public abstract class AbstractBaseEntity implements Persistable<Integer> {
+public abstract class AbstractBaseEntity implements HasId {
     public static final int START_SEQ = 100000;
 
     @Id
@@ -24,22 +23,16 @@ public abstract class AbstractBaseEntity implements Persistable<Integer> {
         this.id = id;
     }
 
+    @Override
     public void setId(Integer id) {
         this.id = id;
     }
 
+    @Override
     public Integer getId() {
         return id;
     }
 
-    public int id() {
-        Assert.notNull(id, "Entity must have id");
-        return id;
-    }
-
-    public boolean isNew() {
-        return this.id == null;
-    }
 
     @Override
     public String toString() {

@@ -2,6 +2,8 @@ package com.grigorievfinance.traderdiary.service;
 
 import com.grigorievfinance.traderdiary.model.User;
 import com.grigorievfinance.traderdiary.repository.UserRepository;
+import com.grigorievfinance.traderdiary.to.UserTo;
+import com.grigorievfinance.traderdiary.util.UserUtil;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -48,7 +50,15 @@ public class UserService {
     @CacheEvict(value = "users", allEntries = true)
     public void update(User user) {
         Assert.notNull(user, "user must not be null");
-        checkNotFoundWithId(userRepository.save(user), user.getId());
+        userRepository.save(user);
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
+    @Transactional
+    public void update(UserTo userTo) {
+        User user = get(userTo.id());
+        User updatedUser = UserUtil.updateFromTo(user, userTo);
+        userRepository.save(updatedUser);
     }
 
     @CacheEvict(value = "users", allEntries = true)

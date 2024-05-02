@@ -4,24 +4,24 @@ import java.beans.ConstructorProperties;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class PositionTo {
-    private final Integer id;
+public class PositionTo extends BaseTo {
+
     private final LocalDateTime dateTime;
+
     private final String symbol;
+
     private final double profitLoss;
+
     private final boolean profitable;
+
 
     @ConstructorProperties({"id", "dateTime", "description", "profitLoss", "profitable"})
     public PositionTo(Integer id, LocalDateTime dateTime, String symbol, double profitLoss, boolean profitable) {
-        this.id = id;
+        super(id);
         this.dateTime = dateTime;
         this.symbol = symbol;
         this.profitLoss = profitLoss;
         this.profitable = profitable;
-    }
-
-    public Integer getId() {
-        return id;
     }
 
     public LocalDateTime getDateTime() {
