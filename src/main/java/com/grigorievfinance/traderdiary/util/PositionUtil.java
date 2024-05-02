@@ -12,7 +12,6 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class PositionUtil {
-    public static final double MAX_LOSS = 1000;
 
     public PositionUtil() {
     }

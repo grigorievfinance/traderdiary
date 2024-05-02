@@ -2,6 +2,8 @@ package com.grigorievfinance.traderdiary.web.user;
 
 import com.grigorievfinance.traderdiary.model.User;
 import com.grigorievfinance.traderdiary.service.UserService;
+import com.grigorievfinance.traderdiary.to.UserTo;
+import com.grigorievfinance.traderdiary.util.UserUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,10 @@ public abstract class AbstractUserController {
     public User get(int id) {
         log.info("get {}", id);
         return userService.get(id);
+    }
+
+    public void create(UserTo userTo) {
+        create(UserUtil.createNewFromTo(userTo));
     }
 
     public User create(User user) {

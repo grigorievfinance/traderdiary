@@ -1,7 +1,6 @@
 package com.grigorievfinance.traderdiary.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import com.grigorievfinance.traderdiary.util.PositionUtil;
 import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.validator.constraints.Range;
@@ -18,6 +17,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.*;
+
+import static com.grigorievfinance.traderdiary.util.UserUtil.DEFAULT_BALANCE;
 
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @NamedQueries({
@@ -64,7 +65,7 @@ public class User extends AbstractNamedEntity {
 
     @Column(name = "balance", nullable = false, columnDefinition = "int default 1000")
     @Range(min = 10, max = 10000)
-    private double balance = 1000;
+    private double balance = DEFAULT_BALANCE;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "user") //, cascade = CascadeType.REMOVE, orphanRemoval = true)
     @OrderBy("dateTime DESC")
@@ -80,7 +81,7 @@ public class User extends AbstractNamedEntity {
     }
 
     public User(Integer id, String name, String email, String password, Role... roles) {
-        this(id, name, email, password, true, new Date(), List.of(roles), PositionUtil.MAX_LOSS);
+        this(id, name, email, password, true, new Date(), List.of(roles), DEFAULT_BALANCE);
     }
 
     public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles, double balance) {
