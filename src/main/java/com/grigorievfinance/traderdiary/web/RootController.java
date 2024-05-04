@@ -23,7 +23,7 @@ public class RootController {
     @GetMapping("/")
     public String root() {
         log.info("root");
-        return "index";
+        return "redirect:positions";
     }
 
     @GetMapping("/users")
@@ -38,6 +38,12 @@ public class RootController {
         log.info("setUser {}", userId);
         SecurityUtil.setAuthUserId(userId);
         return "redirect:positions";
+    }
+
+    @GetMapping("/login")
+    public String login() {
+        log.info("login");
+        return "login";
     }
 
     @GetMapping("/positions")
