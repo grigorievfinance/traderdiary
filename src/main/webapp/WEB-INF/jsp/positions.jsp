@@ -56,23 +56,11 @@
             <tr>
                 <th><spring:message code="position.dateTime"/></th>
                 <th><spring:message code="position.description"/></th>
-                <th><spring:message code="position.profit"/></th>
+                <th><spring:message code="position.profitLoss"/></th>
                 <th></th>
                 <th></th>
             </tr>
             </thead>
-            <c:forEach items="${requestScope.meals}" var="meal">
-                <jsp:useBean id="meal" type="com.grigorievfinance.traderdiary.to.PositionTo"/>
-                <tr data-meal-excess="${meal.excess}">
-                    <td>
-                        ${fn:formatDateTime(meal.dateTime)}
-                    </td>
-                    <td>${meal.description}</td>
-                    <td>${meal.calories}</td>
-                    <td><a><span class="fa fa-pencil"></span></a></td>
-                    <td><a onclick="deleteRow(${meal.id})"><span class="fa fa-remove"></span></a></td>
-                </tr>
-            </c:forEach>
         </table>
     </div>
 </div>
@@ -102,7 +90,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="calories" class="col-form-label"><spring:message code="position.profit"/></label>
+                        <label for="calories" class="col-form-label"><spring:message code="position.profitLoss"/></label>
                         <input type="number" class="form-control" id="calories" name="calories" placeholder="1000">
                     </div>
                 </form>
@@ -122,4 +110,7 @@
 </div>
 <jsp:include page="fragments/footer.jsp"/>
 </body>
+<jsp:include page="fragments/i18n.jsp">
+    <jsp:param name="page" value="position"/>
+</jsp:include>
 </html>

@@ -17,35 +17,42 @@ function clearFilter() {
 }
 
 $(function () {
-    makeEditable(
-        $("#datatable").DataTable({
-            "paging": false,
-            "info": true,
-            "columns": [
-                {
-                    "data": "dateTime"
-                },
-                {
-                    "data": "description"
-                },
-                {
-                    "data": "profit"
-                },
-                {
-                    "defaultContent": "Edit",
-                    "orderable": false
-                },
-                {
-                    "defaultContent": "Delete",
-                    "orderable": false
+    makeEditable({
+        "columns": [
+            {
+                "data": "dateTime",
+                "render": function (date, type, row) {
+                    if (type === 'display') {
+                        return date.replace('T', ' ').substr(0, 16);
+                    }
+                    return date;
                 }
-            ],
-            "order": [
-                [
-                    0,
-                    "desc"
-                ]
+            },
+            {
+                "data": "description"
+            },
+            {
+                "data": "profitLoss"
+            },
+            {
+                "render": renderEditBtn,
+                "defaultContent": "",
+                "orderable": false
+            },
+            {
+                "render": renderDeleteBtn,
+                "defaultContent": "",
+                "orderable": false
+            }
+        ],
+        "order": [
+            [
+                0,
+                "desc"
             ]
-        })
-    );
+        ],
+        "createdRow": function (row, data, dataIndex) {
+            $(row).attr("data-position-profitable", data.profitable);
+        }
+    });
 });

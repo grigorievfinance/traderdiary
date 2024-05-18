@@ -21,7 +21,7 @@
             <dd><input type="text" value="${position.symbol}" size=40 name="description" required></dd>
         </dl>
         <dl>
-            <dt><spring:message code="position.profit"/></dt>
+            <dt><spring:message code="position.profitLoss"/></dt>
             <dd><input type="number" value="${position.profitLoss}" name="profit" required></dd>
         </dl>
         <button type="submit"><spring:message code="common.save"/> </button>

@@ -2,14 +2,16 @@ package com.grigorievfinance.traderdiary.web.position;
 
 import com.grigorievfinance.traderdiary.model.Position;
 import com.grigorievfinance.traderdiary.to.PositionTo;
-import org.springframework.format.annotation.DateTimeFormat;
+import com.grigorievfinance.traderdiary.util.ValidationUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.Nullable;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -18,7 +20,8 @@ import java.util.List;
 public class PositionUIController extends AbstractPositionController {
 
     @Override
-    public Position get(int id) {
+    @GetMapping("/{id}")
+    public Position get(@PathVariable int id) {
         return super.get(id);
     }
 
@@ -37,10 +40,16 @@ public class PositionUIController extends AbstractPositionController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void create(@RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)LocalDateTime dateTime,
-                       @RequestParam String description,
-                       @RequestParam double profit) {
-        super.create(new Position(null, dateTime, description, profit));
+    public ResponseEntity<String> createOrUpdate(@Valid Position position, BindingResult result) {
+        if (result.hasErrors()) {
+            return ValidationUtil.getErrorResponse(result);
+        }
+        if (position.isNew()) {
+            super.create(position);
+        } else {
+            super.update(position, position.getId());
+        }
+        return ResponseEntity.ok().build();
     }
 
     @Override
