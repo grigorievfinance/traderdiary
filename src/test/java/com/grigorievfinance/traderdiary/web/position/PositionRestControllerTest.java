@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static com.grigorievfinance.traderdiary.PositionTestData.*;
+import static com.grigorievfinance.traderdiary.TestUtil.userHttpBasic;
 import static com.grigorievfinance.traderdiary.UserTestData.USER_ID;
 import static com.grigorievfinance.traderdiary.UserTestData.user;
 import static com.grigorievfinance.traderdiary.util.PositionUtil.createTo;
@@ -32,7 +33,8 @@ public class PositionRestControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + POSITION1_ID))
+        perform(MockMvcRequestBuilders.get(REST_URL + POSITION1_ID)
+                .with(userHttpBasic(user)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -40,8 +42,15 @@ public class PositionRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
+    void getUnauth() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + POSITION1_ID))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL + POSITION1_ID))
+        perform(MockMvcRequestBuilders.delete(REST_URL + POSITION1_ID)
+                .with(userHttpBasic(user)))
                 .andExpect(status().isNoContent());
         assertThrows(NotFoundException.class, () -> positionService.get(POSITION1_ID, USER_ID));
     }
@@ -50,6 +59,7 @@ public class PositionRestControllerTest extends AbstractControllerTest {
     void update() throws Exception {
         Position updated = getUpdated();
         perform(MockMvcRequestBuilders.put(REST_URL + POSITION1_ID).contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(user))
                 .content(JsonUtil.writeValue(updated)))
                 .andExpect(status().isNoContent());
 
@@ -61,6 +71,7 @@ public class PositionRestControllerTest extends AbstractControllerTest {
         Position newposition = getNew();
         ResultActions action = perform(MockMvcRequestBuilders.post(REST_URL)
                 .contentType(MediaType.APPLICATION_JSON)
+                .with(userHttpBasic(user))
                 .content(JsonUtil.writeValue(newposition)))
                 .andExpect(status().isCreated());
 
@@ -73,7 +84,8 @@ public class PositionRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getAll() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL))
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(user)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -84,7 +96,8 @@ public class PositionRestControllerTest extends AbstractControllerTest {
     void getBetween() throws Exception {
         perform(MockMvcRequestBuilders.get(REST_URL + "filter")
                 .param("startDate", "2020-01-30").param("startTime", "07:00")
-                .param("endDate", "2020-01-31").param("endTime", "11:00"))
+                .param("endDate", "2020-01-31").param("endTime", "11:00")
+                .with(userHttpBasic(user)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(TO_MATCHER.contentJson(createTo(position5, true), createTo(position1, false)));
@@ -92,7 +105,8 @@ public class PositionRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getBetweenAll() throws Exception {
-        perform(MockMvcRequestBuilders.get(REST_URL + "filter?startDate=&endTime="))
+        perform(MockMvcRequestBuilders.get(REST_URL + "filter?startDate=&endTime=")
+                .with(userHttpBasic(user)))
                 .andExpect(status().isOk())
                 .andExpect(TO_MATCHER.contentJson(getTos(positions, user.getBalance())));
     }
