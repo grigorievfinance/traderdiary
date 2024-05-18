@@ -1,6 +1,7 @@
 package com.grigorievfinance.traderdiary.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.grigorievfinance.traderdiary.View;
 import com.grigorievfinance.traderdiary.util.DateTimeUtil;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -48,6 +49,7 @@ public class Position extends AbstractBaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonBackReference
+    @NotNull(groups = View.Persist.class)
     private User user;
 
     public Position() {
