@@ -64,4 +64,8 @@
         <property name="basenames" value="file:///#{systemEnvironment[traderdiary_ROOT]}/config/messages/app"/>
         <property name="fallbackToSystemLocale" value="false"/>
     </bean>
+
+    <mvc:interceptors>
+        <bean class="com.grigorievfinance.traderdiary.web.interceptor.ModeInterceptor"/>
+    </mvc:interceptors>
 </beans>
