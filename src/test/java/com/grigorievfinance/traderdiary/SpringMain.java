@@ -16,7 +16,7 @@ public class SpringMain {
         try (ConfigurableApplicationContext applicationContext = new ClassPathXmlApplicationContext("spring/inmemory.xml")){
             System.out.println("Bean definition names: " + Arrays.toString(applicationContext.getBeanDefinitionNames()));
             AdminRestController adminRestController = applicationContext.getBean(AdminRestController.class);
-            adminRestController.create(new User(null, "username", "email@email.com", "password", Role.ADMIN));
+            adminRestController.create(new User(null, "username", "email@email.com", "password", 2000, Role.ADMIN));
             mockAuthorize(user);
         }
     }

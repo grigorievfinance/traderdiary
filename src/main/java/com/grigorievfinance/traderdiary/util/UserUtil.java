@@ -9,7 +9,7 @@ public class UserUtil {
     public static final double DEFAULT_BALANCE = 2000;
 
     public static User createNewFromTo(UserTo userTo) {
-        return new User(null, userTo.getName(), userTo.getEmail().toLowerCase(), userTo.getPassword(), Role.USER);
+        return new User(null, userTo.getName(), userTo.getEmail().toLowerCase(), userTo.getPassword(), userTo.getBalance(), Role.USER);
     }
 
     public static UserTo asTo(User user) {

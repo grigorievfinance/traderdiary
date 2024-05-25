@@ -2,10 +2,10 @@ DELETE FROM user_role;
 DELETE FROM users;
 ALTER SEQUENCE global_seq RESTART WITH 100000;
 
-INSERT INTO users (name, email, password)
-VALUES ('User', 'user@mail.com', 'password'),
-       ('Admin', 'admin@mail.com', 'admin'),
-       ('Guest', 'guest@mail.com', 'guest');
+INSERT INTO users (name, email, password, balance)
+VALUES ('User', 'user@mail.com', 'password', 2005),
+       ('Admin', 'admin@mail.com', 'admin', 1900),
+       ('Guest', 'guest@mail.com', 'guest', 2000);
 
 INSERT INTO user_role (role, user_id)
 VALUES ('USER', 100000),

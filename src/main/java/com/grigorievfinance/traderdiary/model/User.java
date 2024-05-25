@@ -80,8 +80,8 @@ public class User extends AbstractNamedEntity {
         this(u.id, u.name, u.email, u.password, u.enabled, u.registered, u.roles, u.balance);
     }
 
-    public User(Integer id, String name, String email, String password, Role... roles) {
-        this(id, name, email, password, true, new Date(), List.of(roles), DEFAULT_BALANCE);
+    public User(Integer id, String name, String email, String password, double profitLoss, Role... roles) {
+        this(id, name, email, password, true, new Date(), List.of(roles), profitLoss);
     }
 
     public User(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles, double balance) {

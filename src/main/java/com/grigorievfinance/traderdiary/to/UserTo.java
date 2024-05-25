@@ -66,6 +66,10 @@ public class UserTo extends BaseTo implements Serializable {
         this.email = email;
     }
 
+    public void setBalance(Double balance) {
+        this.balance = balance;
+    }
+
     public @Range(min = 10, max = 10000) @NotNull Double getBalance() {
         return balance;
     }

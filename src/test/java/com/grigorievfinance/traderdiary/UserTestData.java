@@ -25,9 +25,9 @@ public class UserTestData {
     public static final int GUEST_ID = START_SEQ + 2;
     public static final int NOT_FOUND = 10;
 
-    public static final User user = new User(USER_ID, "User", "user@mail.com", "password", Role.USER);
-    public static final User admin = new User(ADMIN_ID, "Admin", "admin@mail.com", "admin", Role.ADMIN, Role.USER);
-    public static final User guest = new User(GUEST_ID, "Guest", "guest@mail.com", "guest");
+    public static final User user = new User(USER_ID, "User", "user@mail.com", "password", 2005, Role.USER);
+    public static final User admin = new User(ADMIN_ID, "Admin", "admin@mail.com", "admin", 1900, Role.ADMIN, Role.USER);
+    public static final User guest = new User(GUEST_ID, "Guest", "guest@mail.com", "guest", 2000);
 
     static {
         user.setPositions(positions);
